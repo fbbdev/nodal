@@ -22,64 +22,26 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_GRAPH_NODE_H__
-#define __NODAL_GRAPH_NODE_H__
+#ifndef __NODAL_ANY_H__
+#define __NODAL_ANY_H__
 
-#include "any.h"
-#include "node.h"
-#include "node_data.h"
-
-#include <string>
-#include <unordered_map>
+#include <boost/any.hpp>
 
 namespace nodal
 {
 
-class graph_node
+class any : public boost::any
 {
 public:
-  graph_node(class node const* node);
+  using boost::any::any;
 
-  graph_node(graph_node const& other);
-  graph_node(graph_node&& other);
+  template<typename T>
+  T cast() const { return boost::any_cast<T>(*this); }
 
-  ~graph_node();
-
-  graph_node& operator=(graph_node const& other);
-  graph_node& operator=(graph_node&& other);
-
-  class node const* node() const { return _node; }
-
-  node_data* input_data() { return inputs; }
-  node_data const* input_data() const { return inputs; }
-
-  node_data* property_data() { return properties; }
-  node_data const* property_data() const { return properties; }
-
-  any& attribute(std::string const& key)
-  {
-    return attributes[key];
-  }
-
-  any const& attribute(std::string const& key) const
-  {
-    return attributes.at(key);
-  }
-
-  bool has_attribute(std::string const& key) const
-  {
-    return attributes.count(key);
-  }
-
-private:
-  class node const* _node;
-
-  node_data* inputs;
-  node_data* properties;
-
-  std::unordered_map<std::string, any> attributes;
+  template<typename T>
+  operator T() const { return cast<T>(); }
 };
 
 } /* namespace nodal */
 
-#endif /* __NODAL_GRAPH_NODE_H__ */
+#endif /* __NODAL_ANY_H__ */

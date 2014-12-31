@@ -67,7 +67,7 @@ T get(attribute_property_map<T, Const> const& pmap,
       nodal::graph_node const* key)
 {
   if (key->has_attribute(pmap.attribute))
-    return boost::any_cast<T>(key->attribute(pmap.attribute));
+    return key->attribute(pmap.attribute);
   else
     return T();
 }
