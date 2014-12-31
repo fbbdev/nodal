@@ -68,35 +68,4 @@ namespace detail
 
 } /* namespace nodal */
 
-#ifndef __NODAL_BUILDING_GRAPH_LINK_CPP__
-
-namespace boost
-{
-
-  namespace multi_index
-  {
-
-    extern template class multi_index_container<
-      nodal::graph_link,
-      indexed_by<
-        hashed_unique<identity<nodal::graph_link>, nodal::graph_link::hash>,
-        ordered_non_unique<
-          tag<nodal::detail::source_index>,
-          member<nodal::graph_link, nodal::graph_node*,
-                 &nodal::graph_link::source_node>
-        >,
-        ordered_non_unique<
-          tag<nodal::detail::target_index>,
-          member<nodal::graph_link, nodal::graph_node*,
-                 &nodal::graph_link::target_node>
-        >
-      >
-    >;
-
-  } /* namespace multi_index */
-
-} /* namespace boost */
-
-#endif /* __NODAL_BUILDING_GRAPH_LINK_CPP__ */
-
 #endif /* __NODAL_DETAIL_LINK_LIST_H__ */

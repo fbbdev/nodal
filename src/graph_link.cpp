@@ -28,29 +28,6 @@
 
 using namespace nodal;
 
-namespace boost
-{
-  namespace multi_index
-  {
-    template class multi_index_container<
-      nodal::graph_link,
-      indexed_by<
-        hashed_unique<identity<nodal::graph_link>, nodal::graph_link::hash>,
-        ordered_non_unique<
-          tag<nodal::detail::source_index>,
-          member<nodal::graph_link, nodal::graph_node*,
-                 &nodal::graph_link::source_node>
-        >,
-        ordered_non_unique<
-          tag<nodal::detail::target_index>,
-          member<nodal::graph_link, nodal::graph_node*,
-                 &nodal::graph_link::target_node>
-        >
-      >
-    >;
-  }
-}
-
 std::size_t graph_link::hash::operator()(graph_link const& link) const
 {
   std::size_t hash = 0;
