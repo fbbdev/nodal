@@ -36,10 +36,14 @@ public:
   using boost::any::any;
 
   template<typename T>
-  T cast() const { return boost::any_cast<T>(*this); }
+  T& cast() { return boost::any_cast<T&>(*this); }
+  template<typename T>
+  T const& cast() const { return boost::any_cast<T const&>(*this); }
 
   template<typename T>
-  operator T() const { return cast<T>(); }
+  operator T&() { return cast<T>(); }
+  template<typename T>
+  operator T const&() const { return cast<T>(); }
 };
 
 } /* namespace nodal */

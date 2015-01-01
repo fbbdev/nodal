@@ -40,6 +40,8 @@ public:
     std::size_t operator()(graph_link const& link) const;
   };
 
+  graph_link() = default;
+
   graph_link(graph_node* source_node, std::size_t source_socket,
              graph_node* target_node, std::size_t target_socket)
     : source_node(source_node), source_socket(source_socket),

@@ -28,7 +28,7 @@
 #include "any.h"
 #include "graph.h"
 
-#include <list>
+#include <forward_list>
 #include <memory>
 
 namespace nodal
@@ -41,14 +41,16 @@ public:
   virtual void run(graph& graph, any& data) const = 0;
 };
 
-class compiler : public std::list<std::shared_ptr<pass>>
+class compiler : public std::forward_list<pass*>
 {
-  using base = std::list<std::shared_ptr<pass>>;
+  using base = std::forward_list<pass*>;
 
 public:
-  using base::list;
+  using base::forward_list;
 
-  any compile(graph graph, any data) const;
+  ~compiler();
+
+  any compile(graph graph, any data = any()) const;
 };
 
 } /* namespace nodal */

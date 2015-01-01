@@ -35,9 +35,9 @@ class attribute_property_map
 {
 public:
   using value_type = Value;
-  using reference = value_type;
+  using reference = value_type&;
   using key_type = nodal::graph_node*;
-  using category = read_write_property_map_tag;
+  using category = lvalue_property_map_tag;
 
   attribute_property_map(std::string const& attribute)
     : attribute(attribute)
@@ -70,6 +70,16 @@ T get(attribute_property_map<T, Const> const& pmap,
     return key->attribute(pmap.attribute);
   else
     return T();
+}
+
+template<typename T>
+T& get(attribute_property_map<T, false> const& pmap,
+       nodal::graph_node* key)
+{
+  if (!key->has_attribute(pmap.attribute))
+    key->attribute(pmap.attribute) = T();
+
+  return key->attribute(pmap.attribute);
 }
 
 template<typename T>

@@ -92,7 +92,7 @@ graph::node_iterator graph::remove(node_iterator iter)
 {
   unlink(iter);
   delete *iter;
-  return _nodes.end();
+  return _nodes.erase(iter);
 }
 
 graph::node_iterator graph::remove(node_range range)
@@ -163,11 +163,11 @@ void boost::remove_edge(nodal::graph_node* u, nodal::graph_node* v,
 {
   auto range = g.output_links(u);
 
-  for (auto it = range.first, next = it; it != range.second; it = next)
+  for (auto it = range.first; it != range.second;)
   {
     if (it->target_node == v)
-      next = g.unlink(it);
+      it = g.unlink(it);
     else
-      next = ++it;
+      ++it;
   }
 }

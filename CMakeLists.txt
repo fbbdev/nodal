@@ -63,8 +63,12 @@ configure_source_definitions(
 add_library(nodal ${SOURCES} ${HEADERS})
 
 enable_cxx11(nodal)
-target_include_directories(
-  nodal PRIVATE "include/nodal" "src" ${Boost_INCLUDE_DIRS})
+target_include_directories(nodal PRIVATE "src")
+target_include_directories(nodal PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/nodal>
+  $<BUILD_INTERFACE:${Boost_INCLUDE_DIRS}>
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+)
 
 set_target_properties(nodal PROPERTIES
   VERSION "${PROJECT_VERSION}"
@@ -84,7 +88,7 @@ install(EXPORT nodal
 configure_package_config_file(
   "nodal-config.cmake.in" "${PROJECT_BINARY_DIR}/nodal-config.cmake"
   INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/nodal"
-  PATH_VARS CMAKE_INSTALL_INCLUDEDIR)
+  PATH_VARS CMAKE_INSTALL_BINDIR CMAKE_INSTALL_LIBDIR CMAKE_INSTALL_INCLUDEDIR)
 
 write_basic_package_version_file(
   "${PROJECT_BINARY_DIR}/nodal-config-version.cmake"

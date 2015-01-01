@@ -23,7 +23,10 @@
 @PACKAGE_INIT@
 
 include("${CMAKE_CURRENT_LIST_DIR}/nodal-targets.cmake")
-target_include_directories(nodal INTERFACE "@PACKAGE_CMAKE_INSTALL_INCLUDEDIR@")
 
 find_package(Boost REQUIRED)
-target_include_directories(nodal INTERFACE ${Boost_INCLUDE_DIRS})
+get_target_property(incdirs nodal INTERFACE_INCLUDE_DIRECTORIES)
+list(APPEND incdirs ${Boost_INCLUDE_DIRS})
+set_target_properties(nodal PROPERTIES
+  INTERFACE_INCLUDE_DIRECTORIES "${incdirs}"
+)

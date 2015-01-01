@@ -26,6 +26,12 @@
 
 using namespace nodal;
 
+compiler::~compiler()
+{
+  for (auto pass: *this)
+    if (pass) delete pass;
+}
+
 any compiler::compile(graph graph, any data) const
 {
   for (auto const& pass: *this)
