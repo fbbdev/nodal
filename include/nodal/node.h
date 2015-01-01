@@ -25,12 +25,12 @@
 #ifndef __NODAL_NODE_H__
 #define __NODAL_NODE_H__
 
+#include "node_data.h"
+
 #include <cstddef>
 
 namespace nodal
 {
-
-class node_data;
 
 class node
 {

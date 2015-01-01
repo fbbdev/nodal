@@ -25,12 +25,12 @@
 #ifndef __NODAL_GRAPH_LINK_H__
 #define __NODAL_GRAPH_LINK_H__
 
+#include "graph_node.h"
+
 #include <cstddef>
 
 namespace nodal
 {
-
-class graph_node;
 
 class graph_link
 {
