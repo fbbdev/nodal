@@ -39,6 +39,8 @@ set(SOURCES
   src/graph.cpp
   src/graph_link.cpp
   src/graph_node.cpp
+
+  src/passes/dead_branch_removal.cpp
 )
 
 set(HEADERS
@@ -53,6 +55,11 @@ set(HEADERS
   include/nodal/detail/graph_access.h
   include/nodal/detail/graph_properties.h
   include/nodal/detail/link_list.h
+
+  include/nodal/passes/cycle_detection.h
+  include/nodal/passes/dead_branch_removal.h
+  include/nodal/passes/depth_first_search.h
+  include/nodal/passes/topological_sort.h
 )
 
 configure_source_definitions(
