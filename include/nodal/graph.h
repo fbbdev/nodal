@@ -67,9 +67,12 @@ public:
     _links.clear();
   }
 
-  node_iterator add(graph_node* node)
+  graph_node* add(graph_node* node)
   {
-    return node ? _nodes.insert(node).first : _nodes.end();
+    if (node)
+      _nodes.insert(node);
+
+    return node;
   }
 
   template<typename... Args>
@@ -89,17 +92,17 @@ public:
 
   node_iterator nodes_begin() const
   {
-    return _nodes.begin();
+    return _nodes.cbegin();
   }
 
   node_iterator nodes_end() const
   {
-    return _nodes.end();
+    return _nodes.cend();
   }
 
   node_range nodes() const
   {
-    return { _nodes.begin(), _nodes.end() };
+    return { _nodes.cbegin(), _nodes.cend() };
   }
 
   std::size_t node_count() const
@@ -112,17 +115,16 @@ public:
     return _nodes.count(node);
   }
 
-  link_iterator link(graph_link const& link)
+  graph_link const& link(graph_link const& link);
+
+  graph_link const& link(node_iterator source_iter, std::size_t source_socket,
+                         node_iterator target_iter, std::size_t target_socket)
   {
-    return _links.insert(link).first;
+    return link(*source_iter, source_socket, *target_iter, target_socket);
   }
 
-  graph_link link(graph_node* source_node, std::size_t source_socket,
-                  graph_node* target_node, std::size_t target_socket)
-  {
-    return *_links.emplace(source_node, source_socket,
-                           target_node, target_socket).first;
-  }
+  graph_link const& link(graph_node* source_node, std::size_t source_socket,
+                         graph_node* target_node, std::size_t target_socket);
 
   link_iterator unlink(link_iterator iter)
   {
@@ -217,17 +219,17 @@ public:
 
   link_iterator links_begin() const
   {
-    return _links.begin();
+    return _links.cbegin();
   }
 
   link_iterator links_end() const
   {
-    return _links.end();
+    return _links.cend();
   }
 
   link_range links() const
   {
-    return { _links.begin(), _links.end() };
+    return { _links.cbegin(), _links.cend() };
   }
 
   std::size_t link_count() const

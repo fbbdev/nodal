@@ -174,7 +174,7 @@ add_edge(nodal::graph_node* u, nodal::graph_node* v,
   nodal::graph_link link(u, sockets.first, v, sockets.second);
   bool inserted = !g.has(link);
 
-  return { *g.link(link), inserted };
+  return { g.link(link), inserted };
 }
 
 void remove_edge(nodal::graph_node* u, nodal::graph_node* v, nodal::graph& g);
