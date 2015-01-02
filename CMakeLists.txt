@@ -33,6 +33,9 @@ include(GNUInstallDirs)
 find_package(Boost REQUIRED)
 
 option(BUILD_SHARED_LIBS "Build shared libraries instead of static" OFF)
+option(BUILD_EXAMPLES    "Build examples"                           OFF)
+
+set(BUILDING_NODAL TRUE)
 
 set(SOURCES
   src/compiler.cpp
@@ -70,16 +73,20 @@ configure_source_definitions(
 add_library(nodal ${SOURCES} ${HEADERS})
 
 enable_cxx11(nodal)
-target_include_directories(nodal PRIVATE "src")
+target_include_directories(nodal PRIVATE "include/nodal" "src")
 target_include_directories(nodal PUBLIC
-  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include/nodal>
   $<BUILD_INTERFACE:${Boost_INCLUDE_DIRS}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-)
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
+target_include_directories(nodal INTERFACE
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>)
 
 set_target_properties(nodal PROPERTIES
   VERSION "${PROJECT_VERSION}"
   SOVERSION "${PROJECT_MAJOR_VERSION}.${PROJECT_MINOR_VERSION}")
+
+if(BUILD_EXAMPLES)
+  add_subdirectory(examples)
+endif()
 
 install(DIRECTORY "include/" DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
