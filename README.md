@@ -1,6 +1,33 @@
-# Nodal - Flow-based programming framework
+# Nodal
 
----
+Nodal is a small C++ library offering a generic foundation for development of
+applications based on
+[dataflow](http://en.wikipedia.org/wiki/Dataflow_programming) and
+[flow-based](http://en.wikipedia.org/wiki/Flow-based_programming) programming.
+
+Nodal is based on the Boost Graph Library and makes heavy use of C++ 11
+features.
+
+## Building
+
+Dependencies:
+
+  * boost >= 1.55.0
+
+```
+git clone https://github.com/nodal/nodal.git
+cd nodal
+mkdir build
+cd build
+cmake -DCMAKE_BUILD_TYPE={Debug|Release} -DBUILD_EXAMPLES={ON|OFF} ..
+make
+```
+
+## Documentation
+
+The library is not complete and lacks documentation. See the
+[examples](https://github.com/nodal/nodal/tree/master/examples)
+directory for usage examples.
 
 ## License
 
