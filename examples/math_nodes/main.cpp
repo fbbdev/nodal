@@ -37,48 +37,53 @@ int main()
 
   // Build and compile graph
 
-  graph g;
-  auto compiler = create_compiler();
+  graph_fn fn;
 
-  auto in0  = g.add(nodes.input("in0", 0));
-  auto in1  = g.add(nodes.input("in1", 1));
-  auto in2  = g.add(nodes.input("in2", 2));
-  auto add  = g.add(nodes.math("add", math_node::add));
-  auto sub  = g.add(nodes.math("sub", math_node::sub));
-  auto mul  = g.add(nodes.math("mul", math_node::mul));
-  auto mul2 = g.add(nodes.math("mul2", math_node::mul));
-  auto div  = g.add(nodes.math("div", math_node::div));
-  auto div2 = g.add(nodes.math("div2", math_node::div));
-  auto rnd  = g.add(nodes.random("rnd"));
-  auto out0 = g.add(nodes.output("out0", 0));
-  auto out1 = g.add(nodes.output("out1", 1));
-  auto out2 = g.add(nodes.output("out2", 2));
+  {
+    auto compiler = create_compiler();
+    graph g;
 
-  g.link(in0, 0, div, 0);
-  g.link(in1, 0, div, 1);
+    auto in0  = g.add(nodes.input("in0", 0));
+    auto in1  = g.add(nodes.input("in1", 1));
+    auto in2  = g.add(nodes.input("in2", 2));
+    auto add  = g.add(nodes.math("add", math_node::add));
+    auto sub  = g.add(nodes.math("sub", math_node::sub));
+    auto mul  = g.add(nodes.math("mul", math_node::mul));
+    auto mul2 = g.add(nodes.math("mul2", math_node::mul));
+    auto div  = g.add(nodes.math("div", math_node::div));
+    auto div2 = g.add(nodes.math("div2", math_node::div));
+    auto rnd  = g.add(nodes.random("rnd"));
+    auto out0 = g.add(nodes.output("out0", 0));
+    auto out1 = g.add(nodes.output("out1", 1));
+    auto out2 = g.add(nodes.output("out2", 2));
 
-  g.link(div, 0, add, 0);
-  g.link(in2, 0, add, 1);
+    g.link(in0, 0, div, 0);
+    g.link(in1, 0, div, 1);
 
-  g.link(add, 0, mul, 0);
-  g.link(div, 0, mul, 1);
+    g.link(div, 0, add, 0);
+    g.link(in2, 0, add, 1);
 
-  g.link(mul, 0, out0, 0);
+    g.link(add, 0, mul, 0);
+    g.link(div, 0, mul, 1);
 
-  g.link(add, 0, sub, 0);
-  g.link(mul, 0, sub, 1);
+    g.link(mul, 0, out0, 0);
 
-  g.link(sub, 0, out1, 0);
+    g.link(add, 0, sub, 0);
+    g.link(mul, 0, sub, 1);
 
-  g.link(div, 0, mul2, 0);
-  g.link(rnd, 0, mul2, 1);
+    g.link(sub, 0, out1, 0);
 
-  g.link(mul, 0, div2, 0);
-  g.link(mul2, 0, div2, 1);
+    g.link(div, 0, mul2, 0);
+    g.link(rnd, 0, mul2, 1);
 
-  g.link(div2, 0, out2, 0);
+    g.link(mul, 0, div2, 0);
+    g.link(mul2, 0, div2, 1);
 
-  graph_fn fn = compiler.compile(g);
+    g.link(div2, 0, out2, 0);
+
+    auto compiled = compiler.compile(g);
+    fn = compiled.cast<graph_fn>();
+  } // Free memory
 
   // Read input
 
@@ -94,7 +99,7 @@ int main()
               << outputs[1] << ' '
               << outputs[2]
               << std::endl;
-    delete outputs;
+    delete [] outputs;
   }
 
   return 0;

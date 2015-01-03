@@ -118,7 +118,7 @@ public:
 
       input_offset += n->node()->input_count();
 
-      if (typeid(n->node()) == typeid(output_node*))
+      if (dynamic_cast<output_node const*>(n->node()))
         graph_output_count = std::max(
           graph_output_count, n->property_data()->field<std::size_t>(0));
     }
@@ -143,7 +143,8 @@ public:
           for (auto const& l: c.links)
             input_data.get()[l.second] = outputs[l.first];
 
-          delete outputs;
+          if (outputs)
+            delete [] outputs;
         }
 
         return context.outputs;
