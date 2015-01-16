@@ -27,7 +27,7 @@
 using namespace nodal;
 
 graph_node::graph_node(class node const* node)
-  : _node(node), inputs(nullptr), properties(nullptr)
+  : node_(node), inputs(nullptr), properties(nullptr)
 {
   if (node) {
     inputs = node->input_data();
@@ -36,7 +36,7 @@ graph_node::graph_node(class node const* node)
 }
 
 graph_node::graph_node(graph_node const& other)
-  : _node(other._node), inputs(nullptr), properties(nullptr),
+  : node_(other.node_), inputs(nullptr), properties(nullptr),
     attributes(other.attributes)
 {
   if (other.inputs)
@@ -46,7 +46,7 @@ graph_node::graph_node(graph_node const& other)
 }
 
 graph_node::graph_node(graph_node&& other)
-  : _node(other._node),
+  : node_(other.node_),
     inputs(other.inputs),
     properties(other.properties),
     attributes(std::move(other.attributes))
@@ -64,7 +64,7 @@ graph_node::~graph_node()
 
 graph_node& graph_node::operator=(graph_node const& other)
 {
-  _node = other._node;
+  node_ = other.node_;
   inputs = other.inputs->clone();
   properties = other.properties->clone();
   attributes = other.attributes;
@@ -74,7 +74,7 @@ graph_node& graph_node::operator=(graph_node const& other)
 
 graph_node& graph_node::operator=(graph_node&& other)
 {
-  std::swap(_node, other._node);
+  std::swap(node_, other.node_);
   std::swap(inputs, other.inputs);
   std::swap(properties, other.properties);
   std::swap(attributes, other.attributes);

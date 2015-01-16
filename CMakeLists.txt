@@ -48,6 +48,7 @@ set(SOURCES
 
 set(HEADERS
   include/nodal/any.h
+  include/nodal/attribute.h
   include/nodal/compiler.h
   include/nodal/graph.h
   include/nodal/graph_link.h

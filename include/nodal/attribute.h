@@ -22,61 +22,24 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_GRAPH_NODE_H__
-#define __NODAL_GRAPH_NODE_H__
+#ifndef __NODAL_ATTRIBUTE_H__
+#define __NODAL_ATTRIBUTE_H__
 
-#include "attribute.h"
-#include "node.h"
-#include "node_data.h"
+#include "any.h"
+
+#include <string>
+#include <map>
 
 namespace nodal
 {
 
-class graph_node
-{
-public:
-  graph_node(class node const* node);
+using attribute_key = std::string;
+using attribute_value = any;
 
-  graph_node(graph_node const& other);
-  graph_node(graph_node&& other);
+using attribute_map = std::map<attribute_key, attribute_value>;
 
-  ~graph_node();
-
-  graph_node& operator=(graph_node const& other);
-  graph_node& operator=(graph_node&& other);
-
-  class node const* node() const { return node_; }
-
-  node_data* input_data() { return inputs; }
-  node_data const* input_data() const { return inputs; }
-
-  node_data* property_data() { return properties; }
-  node_data const* property_data() const { return properties; }
-
-  attribute_value& attribute(attribute_key const& key)
-  {
-    return attributes[key];
-  }
-
-  attribute_value const& attribute(attribute_key const& key) const
-  {
-    return attributes.at(key);
-  }
-
-  bool has_attribute(attribute_key const& key) const
-  {
-    return attributes.count(key);
-  }
-
-private:
-  class node const* node_;
-
-  node_data* inputs;
-  node_data* properties;
-
-  attribute_map attributes;
-};
+using attribute = attribute_map::value_type;
 
 } /* namespace nodal */
 
-#endif /* __NODAL_GRAPH_NODE_H__ */
+#endif /* __NODAL_ATTRIBUTE_H__ */

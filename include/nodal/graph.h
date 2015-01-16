@@ -64,13 +64,13 @@ public:
   void clear();
   void clear_links()
   {
-    _links.clear();
+    links_.clear();
   }
 
   graph_node* add(graph_node* node)
   {
     if (node)
-      _nodes.insert(node);
+      nodes_.insert(node);
 
     return node;
   }
@@ -78,7 +78,7 @@ public:
   template<typename... Args>
   graph_node* add(class node const* node)
   {
-    return *_nodes.emplace(new graph_node(node)).first;
+    return *nodes_.emplace(new graph_node(node)).first;
   }
 
   node_iterator remove(node_iterator iter);
@@ -87,32 +87,32 @@ public:
 
   node_iterator find(graph_node* node) const
   {
-    return _nodes.find(node);
+    return nodes_.find(node);
   }
 
   node_iterator nodes_begin() const
   {
-    return _nodes.cbegin();
+    return nodes_.cbegin();
   }
 
   node_iterator nodes_end() const
   {
-    return _nodes.cend();
+    return nodes_.cend();
   }
 
   node_range nodes() const
   {
-    return { _nodes.cbegin(), _nodes.cend() };
+    return { nodes_.cbegin(), nodes_.cend() };
   }
 
   std::size_t node_count() const
   {
-    return _nodes.size();
+    return nodes_.size();
   }
 
   bool has(graph_node* node) const
   {
-    return _nodes.count(node);
+    return nodes_.count(node);
   }
 
   graph_link const& link(graph_link const& link);
@@ -128,37 +128,37 @@ public:
 
   link_iterator unlink(link_iterator iter)
   {
-    return _links.erase(iter);
+    return links_.erase(iter);
   }
 
   link_iterator unlink(link_range range)
   {
-    return _links.erase(range.first, range.second);
+    return links_.erase(range.first, range.second);
   }
 
   input_link_iterator unlink(input_link_iterator iter)
   {
-    return _links.get<detail::target_index>().erase(iter);
+    return links_.get<detail::target_index>().erase(iter);
   }
 
   input_link_iterator unlink(input_link_range range)
   {
-    return _links.get<detail::target_index>().erase(range.first, range.second);
+    return links_.get<detail::target_index>().erase(range.first, range.second);
   }
 
   output_link_iterator unlink(output_link_iterator iter)
   {
-    return _links.get<detail::source_index>().erase(iter);
+    return links_.get<detail::source_index>().erase(iter);
   }
 
   output_link_iterator unlink(output_link_range range)
   {
-    return _links.get<detail::source_index>().erase(range.first, range.second);
+    return links_.get<detail::source_index>().erase(range.first, range.second);
   }
 
   void unlink(graph_link link)
   {
-    _links.erase(link);
+    links_.erase(link);
   }
 
   void unlink(node_iterator iter)
@@ -183,7 +183,7 @@ public:
 
   void unlink_inputs(graph_node* node)
   {
-    _links.get<detail::target_index>().erase(node);
+    links_.get<detail::target_index>().erase(node);
   }
 
   void unlink_outputs(node_iterator iter)
@@ -195,7 +195,7 @@ public:
 
   void unlink_outputs(graph_node* node)
   {
-    _links.get<detail::source_index>().erase(node);
+    links_.get<detail::source_index>().erase(node);
   }
 
   void unlink_input(node_iterator iter, std::size_t socket)
@@ -214,32 +214,32 @@ public:
 
   link_iterator find(graph_link const& link) const
   {
-    return _links.find(link);
+    return links_.find(link);
   }
 
   link_iterator links_begin() const
   {
-    return _links.cbegin();
+    return links_.cbegin();
   }
 
   link_iterator links_end() const
   {
-    return _links.cend();
+    return links_.cend();
   }
 
   link_range links() const
   {
-    return { _links.cbegin(), _links.cend() };
+    return { links_.cbegin(), links_.cend() };
   }
 
   std::size_t link_count() const
   {
-    return _links.size();
+    return links_.size();
   }
 
   bool has(graph_link const& link)
   {
-    return _links.count(link);
+    return links_.count(link);
   }
 
   input_link_range input_links(node_iterator iter) const
@@ -249,7 +249,7 @@ public:
 
   input_link_range input_links(graph_node* node) const
   {
-    return _links.get<detail::target_index>().equal_range(node);
+    return links_.get<detail::target_index>().equal_range(node);
   }
 
   std::size_t input_degree(node_iterator iter) const
@@ -259,7 +259,7 @@ public:
 
   std::size_t input_degree(graph_node* node) const
   {
-    return _links.get<detail::target_index>().count(node);
+    return links_.get<detail::target_index>().count(node);
   }
 
   output_link_range output_links(node_iterator iter) const
@@ -269,7 +269,7 @@ public:
 
   output_link_range output_links(graph_node* node) const
   {
-    return _links.get<detail::source_index>().equal_range(node);
+    return links_.get<detail::source_index>().equal_range(node);
   }
 
   std::size_t output_degree(node_iterator iter) const
@@ -279,7 +279,7 @@ public:
 
   std::size_t output_degree(graph_node* node) const
   {
-    return _links.get<detail::source_index>().count(node);
+    return links_.get<detail::source_index>().count(node);
   }
 
   std::size_t degree(node_iterator iter) const
@@ -293,8 +293,8 @@ public:
   }
 
 private:
-  std::set<graph_node*> _nodes;
-  detail::link_list _links;
+  std::set<graph_node*> nodes_;
+  detail::link_list links_;
 };
 
 } /* namespace nodal */
