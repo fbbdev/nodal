@@ -163,7 +163,7 @@ compiler create_compiler()
     {
       throw compiler_error("Link cycle detected");
     }),
-    new dead_branch_removal_pass([](graph_node* n)
+    new dead_branch_removal_pass([](graph_node const* n)
     {
       return n->node()->cast<::node>()->keep();
     }),

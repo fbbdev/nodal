@@ -34,17 +34,24 @@ namespace
   class dbr_visitor : public boost::default_dfs_visitor
   {
   public:
+    dbr_visitor(std::function<bool(graph_node const* n)> const& keep)
+      : keep(keep)
+      {}
+
     void initialize_vertex(graph_node* n, graph const& g) const
     {
       n->attribute("use_count") = g.output_degree(n);
-      n->attribute("deleted") = false;
+      n->attribute("dead") = false;
     }
 
     void finish_vertex(graph_node* n, graph const& g) const
     {
-      if (n->node()->output_count() &&
-          n->attribute("use_count").cast<std::size_t>() < 1) {
-        n->attribute("deleted") = true;
+      if (keep)
+        if (keep(n))
+          return;
+
+      if (n->attribute("use_count").cast<std::size_t>() < 1) {
+        n->attribute("dead") = true;
 
         auto links = g.input_links(n);
 
@@ -54,18 +61,21 @@ namespace
         }
       }
     }
+
+  private:
+    std::function<bool(graph_node const* n)> const& keep;
   };
 
 } /* namespace */
 
 void dead_branch_removal_pass::run(graph& graph, any& data) const
 {
-  boost::depth_first_search(graph, dbr_visitor(),
+  boost::depth_first_search(graph, dbr_visitor(keep),
                             boost::get(boost::vertex_color, graph));
 
   auto nodes = graph.nodes();
   for (auto node = nodes.first; node != nodes.second;) {
-    if ((*node)->attribute("deleted"))
+    if ((*node)->attribute("dead"))
       node = graph.remove(node);
     else
       ++node;

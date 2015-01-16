@@ -35,14 +35,14 @@ namespace nodal
 class dead_branch_removal_pass : public pass
 {
 public:
-  dead_branch_removal_pass(std::function<bool(graph_node*)> const& keep)
+  dead_branch_removal_pass(std::function<bool(graph_node const*)> const& keep)
     : keep(keep)
     {}
 
   void run(graph& graph, any& data) const override;
 
 private:
-  std::function<bool(graph_node*)> keep;
+  std::function<bool(graph_node const*)> keep;
 };
 
 } /* namespace nodal */
