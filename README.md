@@ -1,5 +1,7 @@
 # Nodal
 
+[![Build Status](https://travis-ci.org/nodal/nodal.svg?branch=master)](https://travis-ci.org/nodal/nodal)
+
 Nodal is a small C++ library offering a generic foundation for development of
 applications based on
 [dataflow](http://en.wikipedia.org/wiki/Dataflow_programming) and
