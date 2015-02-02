@@ -36,15 +36,15 @@ node_data* math_node::input_data() const
                         offsetof(input_data_t, second)>({ 0.0, 0.0 });
 }
 
-node_data* math_node::property_data() const
+node_data* math_node::params_data() const
 {
-  return make_node_data<property_data_t,
-                        offsetof(property_data_t, fn)>({ first });
+  return make_node_data<params_data_t,
+                        offsetof(params_data_t, fn)>({ first });
 }
 
-node_fn math_node::compile(node_data* property_data) const
+node_fn math_node::compile(node_data* params_data) const
 {
-  switch (property_data->field<function>(0))
+  switch (params_data->field<function>(0))
   {
     case first:
       return [](double* inputs, context const&)

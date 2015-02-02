@@ -32,17 +32,17 @@
 class input_node : public node
 {
 public:
-  struct property_data_t
+  struct params_data_t
   {
     std::size_t index;
   };
 
   std::size_t output_count() const override { return 1; }
-  std::size_t property_count() const override { return 1; }
+  std::size_t params_count() const override { return 1; }
 
-  nodal::node_data* property_data() const override;
+  nodal::node_data* params_data() const override;
 
-  node_fn compile(nodal::node_data* property_data) const override;
+  node_fn compile(nodal::node_data* params_data) const override;
 };
 
 #endif /* __NODAL_EXAMPLE_MATH_NODES_INPUT_NODE_H__ */

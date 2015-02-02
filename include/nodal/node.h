@@ -39,10 +39,10 @@ public:
 
   virtual std::size_t input_count() const { return 0; }
   virtual std::size_t output_count() const { return 0; }
-  virtual std::size_t property_count() const { return 0; }
+  virtual std::size_t params_count() const { return 0; }
 
   virtual node_data* input_data() const { return nullptr; }
-  virtual node_data* property_data() const { return nullptr; }
+  virtual node_data* params_data() const { return nullptr; }
 
   template<typename T>
   T* cast()

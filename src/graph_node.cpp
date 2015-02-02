@@ -27,46 +27,46 @@
 using namespace nodal;
 
 graph_node::graph_node(class node const* node)
-  : node_(node), inputs(nullptr), properties(nullptr)
+  : node_(node), inputs(nullptr), params(nullptr)
 {
   if (node) {
     inputs = node->input_data();
-    properties = node->property_data();
+    params = node->params_data();
   }
 }
 
 graph_node::graph_node(graph_node const& other)
-  : node_(other.node_), inputs(nullptr), properties(nullptr),
+  : node_(other.node_), inputs(nullptr), params(nullptr),
     attributes(other.attributes)
 {
   if (other.inputs)
     inputs = other.inputs->clone();
-  if (other.properties)
-    properties = other.properties->clone();
+  if (other.params)
+    params = other.params->clone();
 }
 
 graph_node::graph_node(graph_node&& other)
   : node_(other.node_),
     inputs(other.inputs),
-    properties(other.properties),
+    params(other.params),
     attributes(std::move(other.attributes))
 {
-  other.inputs = other.properties = nullptr;
+  other.inputs = other.params = nullptr;
 }
 
 graph_node::~graph_node()
 {
   if (inputs)
     delete inputs;
-  if (properties)
-    delete properties;
+  if (params)
+    delete params;
 }
 
 graph_node& graph_node::operator=(graph_node const& other)
 {
   node_ = other.node_;
   inputs = other.inputs->clone();
-  properties = other.properties->clone();
+  params = other.params->clone();
   attributes = other.attributes;
 
   return *this;
@@ -76,7 +76,7 @@ graph_node& graph_node::operator=(graph_node&& other)
 {
   std::swap(node_, other.node_);
   std::swap(inputs, other.inputs);
-  std::swap(properties, other.properties);
+  std::swap(params, other.params);
   std::swap(attributes, other.attributes);
 
   return *this;

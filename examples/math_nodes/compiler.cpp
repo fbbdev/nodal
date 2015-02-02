@@ -105,7 +105,7 @@ public:
 
     for (auto n: sorted_nodes) {
       compiled_nodes.emplace_back(
-        n->node()->cast<::node>()->compile(n->property_data()),
+        n->node()->cast<::node>()->compile(n->params_data()),
         input_offset);
 
       node_to_index[n] = i++;
@@ -120,7 +120,7 @@ public:
 
       if (dynamic_cast<output_node const*>(n->node()))
         graph_output_count = std::max(
-          graph_output_count, n->property_data()->field<std::size_t>(0));
+          graph_output_count, n->params_data()->field<std::size_t>(0));
     }
 
     ++graph_output_count;

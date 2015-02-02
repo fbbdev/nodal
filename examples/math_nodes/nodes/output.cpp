@@ -34,15 +34,15 @@ node_data* output_node::input_data() const
                         offsetof(input_data_t, value)>({ 0.0 });
 }
 
-node_data* output_node::property_data() const
+node_data* output_node::params_data() const
 {
-  return make_node_data<property_data_t,
-                        offsetof(property_data_t, index)>({ 0 });
+  return make_node_data<params_data_t,
+                        offsetof(params_data_t, index)>({ 0 });
 }
 
-node_fn output_node::compile(node_data* property_data) const
+node_fn output_node::compile(node_data* params_data) const
 {
-  auto index = property_data->field<std::size_t>(0);
+  auto index = params_data->field<std::size_t>(0);
 
   return [index](double* inputs, context const& context) -> double*
   {

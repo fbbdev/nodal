@@ -35,18 +35,18 @@ public:
     double value;
   };
 
-  struct property_data_t
+  struct params_data_t
   {
     std::size_t index;
   };
 
   std::size_t input_count() const override { return 1; }
-  std::size_t property_count() const override { return 1; }
+  std::size_t params_count() const override { return 1; }
 
   nodal::node_data* input_data() const override;
-  nodal::node_data* property_data() const override;
+  nodal::node_data* params_data() const override;
 
-  node_fn compile(nodal::node_data* property_data) const override;
+  node_fn compile(nodal::node_data* params_data) const override;
 
   bool keep() const override { return true; }
 };

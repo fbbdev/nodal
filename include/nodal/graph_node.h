@@ -50,8 +50,8 @@ public:
   node_data* input_data() { return inputs; }
   node_data const* input_data() const { return inputs; }
 
-  node_data* property_data() { return properties; }
-  node_data const* property_data() const { return properties; }
+  node_data* params_data() { return params; }
+  node_data const* params_data() const { return params; }
 
   attribute_value& attribute(attribute_key const& key)
   {
@@ -72,7 +72,7 @@ private:
   class node const* node_;
 
   node_data* inputs;
-  node_data* properties;
+  node_data* params;
 
   attribute_map attributes;
 };
