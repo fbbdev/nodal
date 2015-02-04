@@ -43,30 +43,24 @@ public:
     pow
   };
 
-  struct input_data_t
+  struct input_block_t
   {
     double first;
     double second;
   };
 
-  struct output_data_t
-  {
-    double result;
-  };
-
-  struct params_data_t
+  struct params_block_t
   {
     function fn;
   };
 
   std::size_t input_count() const override { return 2; }
   std::size_t output_count() const override { return 1; }
-  std::size_t params_count() const override { return 1; }
+  std::size_t param_count() const override { return 1; }
 
-  nodal::node_data* input_data() const override;
-  nodal::node_data* params_data() const override;
+  nodal::node_data* data() const override;
 
-  node_fn compile(nodal::node_data* params_data) const override;
+  node_fn compile(nodal::node_data* data) const override;
 };
 
 #endif /* __NODAL_EXAMPLE_MATH_NODES_MATH_NODE_H__ */

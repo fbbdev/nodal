@@ -29,7 +29,7 @@
 
 using namespace nodal;
 
-node_fn random_node::compile(node_data* params_data) const
+node_fn random_node::compile(node_data* data) const
 {
   std::shared_ptr<std::ifstream> source(
     new std::ifstream("/dev/random", std::ifstream::binary));

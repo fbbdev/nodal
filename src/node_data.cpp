@@ -22,17 +22,38 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_EXAMPLE_MATH_NODES_RANDOM_NODE__
-#define __NODAL_EXAMPLE_MATH_NODES_RANDOM_NODE__
+#include "node_data.h"
 
-#include "../node.h"
+#include <stdexcept>
 
-class random_node : public node
+using namespace nodal;
+
+void* node_data::input_block_ptr(std::size_t) const
 {
-public:
-  std::size_t output_count() const override { return 1; }
+  throw std::logic_error("node_data::input_block_ptr");
+}
 
-  node_fn compile(nodal::node_data* data) const override;
-};
+void* node_data::params_block_ptr(std::size_t) const
+{
+  throw std::logic_error("node_data::param_block_ptr");
+}
 
-#endif /* __NODAL_EXAMPLE_MATH_NODES_RANDOM_NODE__ */
+void* node_data::input_ptr(std::size_t, std::size_t) const
+{
+  throw std::logic_error("node_data::input_ptr(index)");
+}
+
+void* node_data::input_ptr(std::string const&, std::size_t) const
+{
+  throw std::logic_error("node_data::input_ptr(string)");
+}
+
+void* node_data::param_ptr(std::size_t, std::size_t) const
+{
+  throw std::logic_error("node_data::param_ptr(index)");
+}
+
+void* node_data::param_ptr(std::string const&, std::size_t) const
+{
+  throw std::logic_error("node_data::param_ptr(string)");
+}

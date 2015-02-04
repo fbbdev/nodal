@@ -24,25 +24,25 @@
 
 #include "output.h"
 
-#include <iostream>
-
 using namespace nodal;
 
-node_data* output_node::input_data() const
+node_data* output_node::data() const
 {
-  return make_node_data<input_data_t,
-                        offsetof(input_data_t, value)>({ 0.0 });
+  return make_node_data<
+    data_block<
+      input_block_t,
+      data_field<double, offsetof(input_block_t, value)>
+    >,
+    data_block<
+      params_block_t,
+      data_field<std::size_t, offsetof(params_block_t, index)>
+    >
+  >({ 0.0 }, { 0 });
 }
 
-node_data* output_node::params_data() const
+node_fn output_node::compile(node_data* data) const
 {
-  return make_node_data<params_data_t,
-                        offsetof(params_data_t, index)>({ 0 });
-}
-
-node_fn output_node::compile(node_data* params_data) const
-{
-  auto index = params_data->field<std::size_t>(0);
+  auto index = data->param<std::size_t>(0);
 
   return [index](double* inputs, context const& context) -> double*
   {

@@ -42,6 +42,7 @@ set(SOURCES
   src/graph.cpp
   src/graph_link.cpp
   src/graph_node.cpp
+  src/node_data.cpp
 
   src/passes/dead_branch_removal.cpp
 )

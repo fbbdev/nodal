@@ -29,22 +29,24 @@
 
 using namespace nodal;
 
-node_data* math_node::input_data() const
+node_data* math_node::data() const
 {
-  return make_node_data<input_data_t,
-                        offsetof(input_data_t, first),
-                        offsetof(input_data_t, second)>({ 0.0, 0.0 });
+  return make_node_data<
+    data_block<
+      input_block_t,
+      data_field<double, offsetof(input_block_t, first)>,
+      data_field<double, offsetof(input_block_t, first)>
+    >,
+    data_block<
+      params_block_t,
+      data_field<function, offsetof(params_block_t, fn)>
+    >
+  >({ 0.0, 0.0 }, { first });
 }
 
-node_data* math_node::params_data() const
+node_fn math_node::compile(node_data* data) const
 {
-  return make_node_data<params_data_t,
-                        offsetof(params_data_t, fn)>({ first });
-}
-
-node_fn math_node::compile(node_data* params_data) const
-{
-  switch (params_data->field<function>(0))
+  switch (data->param<function>(0))
   {
     case first:
       return [](double* inputs, context const&)

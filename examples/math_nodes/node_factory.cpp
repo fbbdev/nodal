@@ -29,7 +29,7 @@ nodal::graph_node* node_factory::input(std::string const& name,
 {
   auto n = new nodal::graph_node(input_n);
   n->attribute("name") = name;
-  n->params_data()->field<std::size_t>(0) = index;
+  n->data()->param<std::size_t>(0) = index;
 
   return n;
 }
@@ -39,7 +39,7 @@ nodal::graph_node* node_factory::output(std::string const& name,
 {
   auto n = new nodal::graph_node(output_n);
   n->attribute("name") = name;
-  n->params_data()->field<std::size_t>(0) = index;
+  n->data()->param<std::size_t>(0) = index;
 
   return n;
 }
@@ -49,7 +49,7 @@ nodal::graph_node* node_factory::math(std::string const& name,
 {
   auto n = new nodal::graph_node(math_n);
   n->attribute("name") = name;
-  n->params_data()->field<math_node::function>(0) = fn;
+  n->data()->param<math_node::function>(0) = fn;
 
   return n;
 }

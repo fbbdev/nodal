@@ -96,23 +96,22 @@ public:
   {
     auto& sorted_nodes = data.cast<std::forward_list<graph_node*>>();
 
-    std::size_t input_offset = 0;
-    std::size_t graph_output_count = 0;
     std::vector<compiled_node> compiled_nodes;
+    std::size_t graph_output_count = 0;
 
-    std::unordered_map<graph_node*, std::size_t> node_to_index;
-    std::size_t i = 0;
+    std::unordered_map<graph_node*, std::size_t> node_index;
+    std::size_t i = 0, input_offset = 0;
 
     for (auto n: sorted_nodes) {
       compiled_nodes.emplace_back(
-        n->node()->cast<::node>()->compile(n->params_data()),
+        n->node()->cast<::node>()->compile(n->data()),
         input_offset);
 
-      node_to_index[n] = i++;
+      node_index[n] = i++;
 
       auto links = graph.input_links(n);
       for (auto link = links.first; link != links.second; ++link) {
-        compiled_nodes[node_to_index[link->source_node]].links.emplace_back(
+        compiled_nodes[node_index[link->source_node]].links.emplace_back(
           link->source_socket, link->target_socket + input_offset);
       }
 
@@ -120,13 +119,19 @@ public:
 
       if (dynamic_cast<output_node const*>(n->node()))
         graph_output_count = std::max(
-          graph_output_count, n->params_data()->field<std::size_t>(0));
+          graph_output_count, n->data()->param<std::size_t>(0));
     }
 
     ++graph_output_count;
 
     std::shared_ptr<double> input_data(new double[input_offset],
                                        std::default_delete<double[]>());
+
+    for (auto const& n: node_index) {
+      input_offset = compiled_nodes[n.second].input_offset;
+      for (i = 0; i < n.first->node()->input_count(); ++i)
+        input_data.get()[input_offset+i] = n.first->data()->input<double>(i);
+    }
 
     graph_fn result =
       [graph_output_count, input_data, compiled_nodes](double* graph_inputs)

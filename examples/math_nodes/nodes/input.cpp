@@ -28,15 +28,20 @@
 
 using namespace nodal;
 
-node_data* input_node::params_data() const
+node_data* input_node::data() const
 {
-  return make_node_data<params_data_t,
-                        offsetof(params_data_t, index)>({ 0 });
+  return make_node_data<
+    no_data_block,
+    data_block<
+      params_block_t,
+      data_field<std::size_t, offsetof(params_block_t, index)>
+    >
+  >({ 0 });
 }
 
-node_fn input_node::compile(node_data* params_data) const
+node_fn input_node::compile(node_data* data) const
 {
-  auto index = params_data->field<std::size_t>(0);
+  auto index = data->param<std::size_t>(0);
 
   return [index](double*, context const& context)
   {
