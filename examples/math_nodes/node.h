@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_EXAMPLE_MATH_NODES_NODE_H__
-#define __NODAL_EXAMPLE_MATH_NODES_NODE_H__
+#pragma once
 
 #include "context.h"
 
@@ -42,5 +41,3 @@ public:
 
   virtual bool keep() const { return false; }
 };
-
-#endif /* __NODAL_EXAMPLE_MATH_NODES_NODE_H__ */

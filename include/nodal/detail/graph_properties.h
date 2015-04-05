@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_DETAIL_GRAPH_PROPERTIES_H__
-#define __NODAL_DETAIL_GRAPH_PROPERTIES_H__
+#pragma once
 
 #include <boost/graph/properties.hpp>
 
@@ -278,5 +277,3 @@ void put(PropertyTag p, nodal::graph& g, Key&& x, Value&& v)
 }
 
 } /* namespace boost */
-
-#endif /* __NODAL_DETAIL_GRAPH_PROPERTIES_H__ */

@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_PASSES_DEPTH_FIRST_SEARCH_H__
-#define __NODAL_PASSES_DEPTH_FIRST_SEARCH_H__
+#pragma once
 
 #include "../compiler.h"
 
@@ -52,5 +51,3 @@ void depth_first_search_pass<Visitor>::run(graph& graph, any& data) const
 }
 
 } /* namespace nodal */
-
-#endif /* __NODAL_PASSES_DEPTH_FIRST_SEARCH_H__ */

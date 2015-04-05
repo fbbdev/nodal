@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_ATTRIBUTE_H__
-#define __NODAL_ATTRIBUTE_H__
+#pragma once
 
 #include "any.h"
 
@@ -41,5 +40,3 @@ using attribute_map = std::map<attribute_key, attribute_value>;
 using attribute = attribute_map::value_type;
 
 } /* namespace nodal */
-
-#endif /* __NODAL_ATTRIBUTE_H__ */

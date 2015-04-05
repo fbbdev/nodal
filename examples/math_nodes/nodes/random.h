@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_EXAMPLE_MATH_NODES_RANDOM_NODE__
-#define __NODAL_EXAMPLE_MATH_NODES_RANDOM_NODE__
+#pragma once
 
 #include "../node.h"
 
@@ -34,5 +33,3 @@ public:
 
   node_fn compile(nodal::node_data* data) const override;
 };
-
-#endif /* __NODAL_EXAMPLE_MATH_NODES_RANDOM_NODE__ */

@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_EXAMPLE_MATH_NODES_NODES_H__
-#define __NODAL_EXAMPLE_MATH_NODES_NODES_H__
+#pragma once
 
 #include "nodes/all.h"
 
@@ -55,5 +54,3 @@ struct node_factory
   nodal::node* math_n = new math_node;
   nodal::node* random_n = new random_node;
 };
-
-#endif /* __NODAL_EXAMPLE_MATH_NODES_NODES_H__ */

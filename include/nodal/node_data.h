@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_NODE_DATA_H__
-#define __NODAL_NODE_DATA_H__
+#pragma once
 
 #include <stdexcept>
 #include <string>
@@ -300,5 +299,3 @@ node_data* make_node_data(Args&&... args)
 }
 
 } /* namespace nodal */
-
-#endif /* __NODAL_NODE_DATA_H__ */

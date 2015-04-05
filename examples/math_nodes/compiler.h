@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_EXAMPLE_MATH_NODES_COMPILER_H__
-#define __NODAL_EXAMPLE_MATH_NODES_COMPILER_H__
+#pragma once
 
 #include <nodal/compiler.h>
 
@@ -39,5 +38,3 @@ public:
 };
 
 nodal::compiler create_compiler();
-
-#endif /* __NODAL_EXAMPLE_MATH_NODES_COMPILER_H__ */

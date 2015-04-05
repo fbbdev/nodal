@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_DETAIL_LINK_LIST_H__
-#define __NODAL_DETAIL_LINK_LIST_H__
+#pragma once
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
@@ -67,5 +66,3 @@ namespace detail
 } /* namespace detail */
 
 } /* namespace nodal */
-
-#endif /* __NODAL_DETAIL_LINK_LIST_H__ */

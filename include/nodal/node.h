@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_NODE_H__
-#define __NODAL_NODE_H__
+#pragma once
 
 #include "node_data.h"
 
@@ -57,5 +56,3 @@ public:
 };
 
 } /* namespace nodal */
-
-#endif /* __NODAL_NODE_H__ */

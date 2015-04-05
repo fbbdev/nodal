@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_GRAPH_LINK_H__
-#define __NODAL_GRAPH_LINK_H__
+#pragma once
 
 #include "graph_node.h"
 
@@ -64,5 +63,3 @@ public:
 } /* namespace nodal */
 
 #include "detail/link_list.h"
-
-#endif /* __NODAL_GRAPH_LINK_H__ */

@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_DETAIL_GRAPH_ACCESS_H__
-#define __NODAL_DETAIL_GRAPH_ACCESS_H__
+#pragma once
 
 #include <boost/graph/adjacency_iterator.hpp>
 #include <boost/graph/graph_traits.hpp>
@@ -192,5 +191,3 @@ void remove_edge(nodal::graph::link_iterator e_iter, nodal::graph& g)
 }
 
 } /* namespace boost */
-
-#endif /* __NODAL_DETAIL_GRAPH_ACCESS_H__ */

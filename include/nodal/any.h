@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,8 +22,7 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_ANY_H__
-#define __NODAL_ANY_H__
+#pragma once
 
 #include <boost/any.hpp>
 
@@ -47,5 +46,3 @@ public:
 };
 
 } /* namespace nodal */
-
-#endif /* __NODAL_ANY_H__ */

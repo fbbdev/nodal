@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,12 +22,9 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_EXAMPLE_MATH_NODES_ALL_NODES_H__
-#define __NODAL_EXAMPLE_MATH_NODES_ALL_NODES_H__
+#pragma once
 
 #include "input.h"
 #include "output.h"
 #include "math.h"
 #include "random.h"
-
-#endif /* __NODAL_EXAMPLE_MATH_NODES_ALL_NODES_H__ */
