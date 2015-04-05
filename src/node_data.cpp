@@ -24,18 +24,11 @@
 
 #include "node_data.h"
 
-#include <stdexcept>
-
 using namespace nodal;
 
-void* node_data::input_block_ptr(std::size_t) const
+void* node_data::data_ptr(std::size_t) const
 {
-  throw std::logic_error("node_data::input_block_ptr");
-}
-
-void* node_data::params_block_ptr(std::size_t) const
-{
-  throw std::logic_error("node_data::param_block_ptr");
+  throw std::logic_error("node_data::data_ptr");
 }
 
 void* node_data::input_ptr(std::size_t, std::size_t) const

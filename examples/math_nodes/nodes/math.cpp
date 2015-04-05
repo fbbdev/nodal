@@ -32,16 +32,15 @@ using namespace nodal;
 node_data* math_node::data() const
 {
   return make_node_data<
+    data_t,
     data_block<
-      input_block_t,
-      data_field<double, offsetof(input_block_t, first)>,
-      data_field<double, offsetof(input_block_t, first)>
+      data_field<double, offsetof(data_t, first)>,
+      data_field<double, offsetof(data_t, first)>
     >,
     data_block<
-      params_block_t,
-      data_field<function, offsetof(params_block_t, fn)>
+      data_field<function, offsetof(data_t, fn)>
     >
-  >({ 0.0, 0.0 }, { first });
+  >(data_t{ 0.0, 0.0, first });
 }
 
 node_fn math_node::compile(node_data* data) const

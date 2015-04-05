@@ -32,8 +32,9 @@
 class input_node : public node
 {
 public:
-  struct params_block_t
+  struct data_t
   {
+    // params
     std::size_t index;
   };
 

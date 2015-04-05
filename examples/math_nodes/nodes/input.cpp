@@ -31,12 +31,12 @@ using namespace nodal;
 node_data* input_node::data() const
 {
   return make_node_data<
+    data_t,
     no_data_block,
     data_block<
-      params_block_t,
-      data_field<std::size_t, offsetof(params_block_t, index)>
+      data_field<std::size_t, offsetof(data_t, index)>
     >
-  >({ 0 });
+  >(data_t{ 0 });
 }
 
 node_fn input_node::compile(node_data* data) const

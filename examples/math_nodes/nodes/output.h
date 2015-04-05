@@ -30,13 +30,12 @@
 class output_node : public node
 {
 public:
-  struct input_block_t
+  struct data_t
   {
+    // inputs
     double value;
-  };
 
-  struct params_block_t
-  {
+    // params
     std::size_t index;
   };
 

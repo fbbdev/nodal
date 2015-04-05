@@ -43,14 +43,13 @@ public:
     pow
   };
 
-  struct input_block_t
+  struct data_t
   {
+    // inputs
     double first;
     double second;
-  };
 
-  struct params_block_t
-  {
+    // params
     function fn;
   };
 

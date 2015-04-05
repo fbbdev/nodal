@@ -25,6 +25,7 @@
 #ifndef __NODAL_NODE_DATA_H__
 #define __NODAL_NODE_DATA_H__
 
+#include <stdexcept>
 #include <string>
 #include <typeinfo>
 #include <type_traits>
@@ -40,27 +41,15 @@ public:
   virtual node_data* clone() const = 0;
 
   template<typename T>
-  T& input_block()
+  T& data()
   {
-    return *reinterpret_cast<T*>(input_block_ptr(sizeof(T)));
+    return *reinterpret_cast<T*>(data_ptr(sizeof(T)));
   }
 
   template<typename T>
-  T const& input_block() const
+  T const& data() const
   {
-    return *reinterpret_cast<T const*>(input_block_ptr(sizeof(T)));
-  }
-
-  template<typename T>
-  T& params_block()
-  {
-    return *reinterpret_cast<T*>(params_block_ptr(sizeof(T)));
-  }
-
-  template<typename T>
-  T const& params_block() const
-  {
-    return *reinterpret_cast<T const*>(params_block_ptr(sizeof(T)));
+    return *reinterpret_cast<T const*>(data_ptr(sizeof(T)));
   }
 
   template<typename T>
@@ -112,8 +101,7 @@ public:
   }
 
 private:
-  virtual void* input_block_ptr(std::size_t size) const;
-  virtual void* params_block_ptr(std::size_t size) const;
+  virtual void* data_ptr(std::size_t size) const;
 
   virtual void* input_ptr(std::size_t index, std::size_t size) const;
   virtual void* input_ptr(std::string const& key, std::size_t size) const;
@@ -129,216 +117,186 @@ struct data_field
   static constexpr std::ptrdiff_t offset = Offset;
 };
 
-template<typename T, typename... Fields>
+template<typename... Fields>
 struct data_block
 {
-  using type = T;
-
+  static constexpr std::size_t field_count = sizeof...(Fields);
   static const std::size_t field_size[sizeof...(Fields)];
-
   static const std::ptrdiff_t field_offset[sizeof...(Fields)];
 };
 
-template<typename T, typename... Fields>
-const std::size_t data_block<T, Fields...>::field_size[sizeof...(Fields)] =
+template<typename... Fields>
+const std::size_t data_block<Fields...>::field_size[sizeof...(Fields)] =
   { Fields::size... };
 
-template<typename T, typename... Fields>
-const std::ptrdiff_t data_block<T, Fields...>::field_offset[sizeof...(Fields)] =
+template<typename... Fields>
+const std::ptrdiff_t data_block<Fields...>::field_offset[sizeof...(Fields)] =
   { Fields::offset... };
 
-template<typename... Fields>
-struct data_block<void, Fields...>
-{
-  static_assert(sizeof...(Fields) == 0, "Fields specified for void data block");
-};
-
-using no_data_block = data_block<void>;
+template<> struct data_block<> {};
+using no_data_block = data_block<>;
 
 namespace detail
 {
 
-  template<typename InputBlock, typename ParamsBlock>
+  template<typename T, typename InputBlock, typename ParamBlock>
   class node_data_impl : public node_data
   {
   public:
-    node_data_impl(typename InputBlock::type const& input_block,
-                   typename ParamsBlock::type const& params_block)
-      : input_block(input_block), params_block(params_block)
-      {}
+    template<typename... Args>
+    node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
 
     node_data* clone() const override
     {
-      return new node_data_impl(input_block, params_block);
+      return new node_data_impl(data);
     }
 
-    typename InputBlock::type input_block;
-    typename ParamsBlock::type params_block;
+    T data;
 
   private:
-    void* input_block_ptr(std::size_t size) const override
+    void* data_ptr(std::size_t size) const override
     {
-      if (size != sizeof(typename InputBlock::type))
+      if (size != sizeof(T))
         throw std::bad_cast();
 
-      return const_cast<typename InputBlock::type*>(&input_block);
-    }
-
-    void* params_block_ptr(std::size_t size) const override
-    {
-      if (size != sizeof(typename ParamsBlock::type))
-        throw std::bad_cast();
-
-      return const_cast<typename ParamsBlock::type*>(&params_block);
+      return const_cast<T*>(&data);
     }
 
     void* input_ptr(std::size_t index, std::size_t size) const override
     {
+      if (index >= InputBlock::field_count)
+        throw std::out_of_range("node_data_impl::input_ptr");
+
       if (size != InputBlock::field_size[index])
         throw std::bad_cast();
 
       return const_cast<char*>(
-        reinterpret_cast<char const*>(&input_block) +
+        reinterpret_cast<char const*>(&data) +
         InputBlock::field_offset[index]);
     }
 
     void* param_ptr(std::size_t index, std::size_t size) const override
     {
-      if (size != ParamsBlock::field_size[index])
+      if (index >= ParamBlock::field_count)
+        throw std::out_of_range("node_data_impl::param_ptr");
+
+      if (size != ParamBlock::field_size[index])
         throw std::bad_cast();
 
       return const_cast<char*>(
-        reinterpret_cast<char const*>(&params_block) +
-        ParamsBlock::field_offset[index]);
+        reinterpret_cast<char const*>(&data) +
+        ParamBlock::field_offset[index]);
     }
   };
 
-  template<typename InputBlock>
-  class node_data_impl<InputBlock, no_data_block> : public node_data
+  template<typename T, typename InputBlock>
+  class node_data_impl<T, InputBlock, no_data_block> : public node_data
   {
   public:
-    node_data_impl(typename InputBlock::type const& input_block)
-      : input_block(input_block)
-      {}
+    template<typename... Args>
+    node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
 
     node_data* clone() const override
     {
-      return new node_data_impl(input_block);
+      return new node_data_impl(data);
     }
 
-    typename InputBlock::type input_block;
+    T data;
 
   private:
-    void* input_block_ptr(std::size_t size) const override
+    void* data_ptr(std::size_t size) const override
     {
-      if (size != sizeof(typename InputBlock::type))
+      if (size != sizeof(T))
         throw std::bad_cast();
 
-      return const_cast<typename InputBlock::type*>(&input_block);
+      return const_cast<T*>(&data);
     }
 
     void* input_ptr(std::size_t index, std::size_t size) const override
     {
+      if (index >= InputBlock::field_count)
+        throw std::out_of_range("node_data_impl::input_ptr");
+
       if (size != InputBlock::field_size[index])
         throw std::bad_cast();
 
       return const_cast<char*>(
-        reinterpret_cast<char const*>(&input_block) +
+        reinterpret_cast<char const*>(&data) +
         InputBlock::field_offset[index]);
     }
   };
 
-  template<typename ParamsBlock>
-  class node_data_impl<no_data_block, ParamsBlock> : public node_data
+  template<typename T, typename ParamBlock>
+  class node_data_impl<T, no_data_block, ParamBlock> : public node_data
   {
   public:
-    node_data_impl(typename ParamsBlock::type const& params_block)
-      : params_block(params_block)
-      {}
+    template<typename... Args>
+    node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
 
     node_data* clone() const override
     {
-      return new node_data_impl(params_block);
+      return new node_data_impl(data);
     }
 
-    typename ParamsBlock::type params_block;
+    T data;
 
   private:
-    void* params_block_ptr(std::size_t size) const override
+    void* data_ptr(std::size_t size) const override
     {
-      if (size != sizeof(typename ParamsBlock::type))
+      if (size != sizeof(T))
         throw std::bad_cast();
 
-      return const_cast<typename ParamsBlock::type*>(&params_block);
+      return const_cast<T*>(&data);
     }
 
     void* param_ptr(std::size_t index, std::size_t size) const override
     {
-      if (size != ParamsBlock::field_size[index])
+      if (index >= ParamBlock::field_count)
+        throw std::out_of_range("node_data_impl::param_ptr");
+
+      if (size != ParamBlock::field_size[index])
         throw std::bad_cast();
 
       return const_cast<char*>(
-        reinterpret_cast<char const*>(&params_block) +
-        ParamsBlock::field_offset[index]);
+        reinterpret_cast<char const*>(&data) +
+        ParamBlock::field_offset[index]);
     }
   };
 
-  template<>
-  class node_data_impl<no_data_block, no_data_block> : public node_data
+  template<typename T>
+  class node_data_impl<T, no_data_block, no_data_block> : public node_data
   {
   public:
+    template<typename... Args>
+    node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
+
     node_data* clone() const override
     {
-      return new node_data_impl;
+      return new node_data_impl(data);
+    }
+
+    T data;
+
+  private:
+    void* data_ptr(std::size_t size) const override
+    {
+      if (size != sizeof(T))
+        throw std::bad_cast();
+
+      return const_cast<T*>(&data);
     }
   };
 
 } /* namespace detail */
 
-template<typename InputBlock, typename ParamsBlock>
-typename std::enable_if<
-  !std::is_same<InputBlock, no_data_block>::value &&
-  !std::is_same<ParamsBlock, no_data_block>::value,
-  node_data*
->::type
-make_node_data(typename InputBlock::type const& input_block,
-               typename ParamsBlock::type const& params_block)
+template<typename T,
+         typename InputBlock,
+         typename ParamBlock,
+         typename... Args>
+node_data* make_node_data(Args&&... args)
 {
-  return new detail::node_data_impl<InputBlock, ParamsBlock>(
-    input_block, params_block);
-}
-
-template<typename InputBlock, typename ParamsBlock>
-typename std::enable_if<
-  !std::is_same<InputBlock, no_data_block>::value &&
-  std::is_same<ParamsBlock, no_data_block>::value,
-  node_data*
->::type
-make_node_data(typename InputBlock::type const& input_block)
-{
-  return new detail::node_data_impl<InputBlock, ParamsBlock>(input_block);
-}
-
-template<typename InputBlock, typename ParamsBlock>
-typename std::enable_if<
-  std::is_same<InputBlock, no_data_block>::value &&
-  !std::is_same<ParamsBlock, no_data_block>::value,
-  node_data*
->::type
-make_node_data(typename ParamsBlock::type const& params_block)
-{
-  return new detail::node_data_impl<InputBlock, ParamsBlock>(params_block);
-}
-
-template<typename InputBlock, typename ParamsBlock>
-typename std::enable_if<
-  std::is_same<InputBlock, no_data_block>::value &&
-  std::is_same<ParamsBlock, no_data_block>::value,
-  node_data*
->::type
-make_node_data()
-{
-  return new detail::node_data_impl<InputBlock, ParamsBlock>;
+  return new detail::node_data_impl<T, InputBlock, ParamBlock>(
+    std::forward<Args>(args)...);
 }
 
 } /* namespace nodal */
