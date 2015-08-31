@@ -35,7 +35,7 @@ node_data* math_node::data() const
     data_t,
     data_block<
       data_field<double, offsetof(data_t, first)>,
-      data_field<double, offsetof(data_t, first)>
+      data_field<double, offsetof(data_t, second)>
     >,
     data_block<
       data_field<function, offsetof(data_t, fn)>

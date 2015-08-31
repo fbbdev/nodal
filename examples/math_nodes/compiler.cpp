@@ -97,6 +97,7 @@ public:
     auto& sorted_nodes = data.cast<std::forward_list<graph_node*>>();
 
     std::vector<compiled_node> compiled_nodes;
+    bool graph_has_outputs = false;
     std::size_t graph_output_count = 0;
 
     std::unordered_map<graph_node*, std::size_t> node_index;
@@ -117,12 +118,21 @@ public:
 
       input_offset += n->node()->input_count();
 
-      if (dynamic_cast<output_node const*>(n->node()))
+      if (dynamic_cast<output_node const*>(n->node())) {
+        graph_has_outputs = true;
         graph_output_count = std::max(
           graph_output_count, n->data()->param<std::size_t>(0));
+      }
     }
 
-    ++graph_output_count;
+    if (graph_has_outputs) {
+      if (graph_output_count ==
+            std::numeric_limits<decltype(graph_output_count)>::max()) {
+        throw compiler_error("Too many outputs required");
+      }
+
+      ++graph_output_count;
+    }
 
     std::shared_ptr<double> input_data(new double[input_offset],
                                        std::default_delete<double[]>());
