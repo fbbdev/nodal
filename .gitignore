@@ -2,3 +2,4 @@ build
 install
 template.h
 template.cpp
+.clang_complete
