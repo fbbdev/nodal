@@ -7,8 +7,7 @@ applications based on
 [dataflow](http://en.wikipedia.org/wiki/Dataflow_programming) and
 [flow-based](http://en.wikipedia.org/wiki/Flow-based_programming) programming.
 
-Nodal is based on the Boost Graph Library and makes heavy use of C++ 11
-features.
+Nodal is based on the Boost Graph Library and uses C++ 11/14 features.
 
 ## Building
 

@@ -20,12 +20,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.2)
 project(nodal VERSION 0.1.0 LANGUAGES CXX C)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-include(EnableCXX11)
+include(EnableCXX14)
 include(ConfigureSourceDefinitions)
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
@@ -74,7 +74,7 @@ configure_source_definitions(
 
 add_library(nodal ${SOURCES} ${HEADERS})
 
-enable_cxx11(nodal)
+enable_cxx14(nodal)
 target_include_directories(nodal PRIVATE "include/nodal" "src")
 target_include_directories(nodal PUBLIC
   $<BUILD_INTERFACE:${Boost_INCLUDE_DIRS}>

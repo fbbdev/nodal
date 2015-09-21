@@ -26,7 +26,7 @@ project(nodal-example-math-nodes CXX C)
 if(NOT BUILDING_NODAL)
   list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
-  include(EnableCXX11)
+  include(EnableCXX14)
   include(ConfigureSourceDefinitions)
   include(GNUInstallDirs)
 
@@ -63,7 +63,7 @@ configure_source_definitions(
 
 add_executable(nodal-example-math-nodes ${SOURCES} ${HEADERS})
 
-enable_cxx11(nodal-example-math-nodes)
+enable_cxx14(nodal-example-math-nodes)
 target_link_libraries(nodal-example-math-nodes nodal)
 
 install(TARGETS nodal-example-math-nodes
