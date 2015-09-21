@@ -74,7 +74,6 @@ public:
     return node;
   }
 
-  template<typename... Args>
   graph_node* add(class node const* node)
   {
     return *nodes_.emplace(new graph_node(node)).first;
