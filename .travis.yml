@@ -4,10 +4,10 @@ compiler:
   - gcc
 before_install:
   - sudo add-apt-repository ppa:boost-latest/ppa -y
-  - sudo add-apt-repository ppa:andykimpe/cmake3 -y
   - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
   - sudo apt-get update -qq
   - sudo apt-get purge -y cmake
-  - sudo apt-get install -y cmake3 boost1.55 g++-4.8
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.8 90
+  - sudo apt-get install -y boost1.55 g++-5
+  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5.1 90
+  - mkdir tmp && cd tmp && wget http://www.cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.sh && ./cmake-3.2.3-Linux-x86_64.sh --skip-license --prefix=/usr && cd .. && rm -rf tmp
 script: mkdir build && cd build && cmake -DBUILD_EXAMPLES=ON .. && make
