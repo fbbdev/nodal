@@ -67,6 +67,10 @@ set(HEADERS
   include/nodal/passes/topological_sort.h
 )
 
+if(BUILD_SHARED_LIBS AND MSVC)
+  list(APPEND SOURCES "src/dllmain.c")
+endif()
+
 configure_source_definitions(
   "__NODAL_BUILDING_@id@__"
   BASE_PATH "src"
