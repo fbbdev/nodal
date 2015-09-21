@@ -46,7 +46,7 @@ class print_graph_pass : public pass
 public:
   print_graph_pass(std::string const& title) : title(title) {}
 
-  void run(graph& graph, any& data) const override
+  any run(graph& graph, nodal::context& ctx) const override
   {
     if (!title.empty())
       std::cout << title << std::endl;
@@ -54,6 +54,8 @@ public:
     boost::print_graph(graph, boost::get(boost::vertex_name, graph));
 
     std::cout << std::endl;
+
+    return {};
   };
 
 private:
@@ -63,7 +65,7 @@ private:
 class type_check_pass : public pass
 {
 public:
-  void run(graph& graph, any& data) const override
+  any run(graph& graph, nodal::context& ctx) const override
   {
     auto nodes = graph.nodes();
     for (auto n = nodes.first; n != nodes.second; ++n)
@@ -71,12 +73,18 @@ public:
       if (!dynamic_cast<::node const*>((*n)->node()))
         throw compiler_error("Invalid node found in graph");
     }
+
+    return {};
   }
 };
+
+using sort_pass = topological_sort_pass<std::forward_list<graph_node*>>;
 
 class compilation_pass : public pass
 {
 public:
+  using result_type = graph_fn;
+
   struct compiled_node
   {
     using link = std::pair<std::size_t, std::size_t>;
@@ -92,9 +100,9 @@ public:
     std::vector<std::pair<std::size_t, std::size_t>> links;
   };
 
-  void run(graph& graph, any& data) const override
+  any run(graph& graph, nodal::context& ctx) const override
   {
-    auto& sorted_nodes = data.cast<std::forward_list<graph_node*>>();
+    auto& sorted_nodes = ctx.pass<sort_pass>();
 
     std::vector<compiled_node> compiled_nodes;
     bool graph_has_outputs = false;
@@ -146,7 +154,7 @@ public:
     graph_fn result =
       [graph_output_count, input_data, compiled_nodes](double* graph_inputs)
       {
-        context context = {
+        ::context context = {
           graph_inputs,
           graph_output_count ? new double[graph_output_count] : nullptr
         };
@@ -165,7 +173,7 @@ public:
         return context.outputs;
       };
 
-    data = std::move(result);
+    return std::move(result);
   }
 };
 
@@ -183,7 +191,7 @@ compiler create_compiler()
       return n->node()->cast<::node>()->keep();
     }),
     new print_graph_pass("Optimized graph:"),
-    new topological_sort_pass<std::forward_list<graph_node*>>,
+    new sort_pass,
     new compilation_pass
   };
 }

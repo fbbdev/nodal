@@ -27,20 +27,39 @@
 #include "any.h"
 #include "graph.h"
 
+#include <typeindex>
 #include <forward_list>
 #include <memory>
+#include <unordered_map>
 
 namespace nodal
 {
+
+class context
+{
+public:
+  template<typename Pass>
+  typename Pass::result_type const& pass() const {
+    return pass_data.at(typeid(Pass));
+  }
+
+private:
+  friend class compiler;
+
+  void set(std::type_index const& pass, any&& data);
+  any get(std::type_index const& pass) const;
+
+  std::unordered_map<std::type_index, any> pass_data;
+};
 
 class pass
 {
 public:
   virtual ~pass() {}
-  virtual void run(graph& graph, any& data) const = 0;
+  virtual any run(graph& graph, context& ctx) const = 0;
 };
 
-class compiler : public std::forward_list<pass*>
+class compiler : public std::forward_list<pass*>, public pass
 {
   using base = std::forward_list<pass*>;
 
@@ -49,7 +68,18 @@ public:
 
   ~compiler();
 
-  any compile(graph graph, any data = any()) const;
+  any run(graph& graph, context& ctx) const override;
+
+  any compile(graph graph, context& ctx) const
+  {
+    return run(graph, ctx);
+  }
+
+  any compile(graph graph) const
+  {
+    context ctx;
+    return compile(std::move(graph), ctx);
+  }
 };
 
 } /* namespace nodal */

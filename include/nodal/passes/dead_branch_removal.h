@@ -38,7 +38,7 @@ public:
     : keep(keep)
     {}
 
-  void run(graph& graph, any& data) const override;
+  any run(graph& graph, context& ctx) const override;
 
 private:
   std::function<bool(graph_node const*)> keep;

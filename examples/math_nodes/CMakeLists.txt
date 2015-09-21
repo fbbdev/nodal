@@ -47,6 +47,7 @@ set(SOURCES
 set(HEADERS
   node.h
   node_factory.h
+  context.h
   compiler.h
 
   nodes/all.h

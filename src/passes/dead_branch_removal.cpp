@@ -68,7 +68,7 @@ namespace
 
 } /* namespace */
 
-void dead_branch_removal_pass::run(graph& graph, any& data) const
+any dead_branch_removal_pass::run(graph& graph, context& ctx) const
 {
   boost::depth_first_search(graph, dbr_visitor(keep),
                             boost::get(boost::vertex_color, graph));
@@ -80,4 +80,6 @@ void dead_branch_removal_pass::run(graph& graph, any& data) const
     else
       ++node;
   }
+
+  return {};
 }

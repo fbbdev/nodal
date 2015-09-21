@@ -81,8 +81,7 @@ int main()
 
     g.link(div2, 0, out2, 0);
 
-    auto compiled = compiler.compile(g);
-    fn = compiled.cast<graph_fn>();
+    fn = compiler.compile(g).cast<graph_fn>();
   } // Free memory
 
   // Read input

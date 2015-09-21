@@ -24,6 +24,8 @@
 
 #include "random.h"
 
+#include <cstdlib>
+#include <ctime>
 #include <fstream>
 #include <stdexcept>
 
@@ -31,6 +33,8 @@ using namespace nodal;
 
 node_fn random_node::compile(node_data* data) const
 {
+  std::srand((unsigned int) std::time(nullptr));
+
   std::shared_ptr<std::ifstream> source(
     new std::ifstream("/dev/random", std::ifstream::binary));
 
@@ -40,6 +44,8 @@ node_fn random_node::compile(node_data* data) const
 
     if (*source)
       source->read((char*) output, sizeof(double));
+    else
+      *output = (double) std::rand();
 
     return output;
   };

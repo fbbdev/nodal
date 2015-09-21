@@ -36,18 +36,20 @@ template<typename Container>
 class topological_sort_pass : public pass
 {
 public:
-  virtual void run(graph& graph, any& data) const override;
+  using result_type = Container;
+
+  any run(graph& graph, context& ctx) const override;
 };
 
 template<typename Container>
-void topological_sort_pass<Container>::run(graph& graph, any& data) const
+any topological_sort_pass<Container>::run(graph& graph, context& ctx) const
 {
   Container c;
 
   boost::topological_sort(graph, std::front_inserter(c),
     boost::color_map(boost::get(boost::vertex_color, graph)));
 
-  data = std::move(c);
+  return std::move(c);
 }
 
 } /* namespace nodal */
