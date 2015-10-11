@@ -66,5 +66,8 @@ add_executable(nodal-example-math-nodes ${SOURCES} ${HEADERS})
 enable_cxx14(nodal-example-math-nodes)
 target_link_libraries(nodal-example-math-nodes nodal)
 
+set_property(TARGET nodal-example-math-nodes
+  PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+
 install(TARGETS nodal-example-math-nodes
         RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
