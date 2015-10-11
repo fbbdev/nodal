@@ -37,7 +37,7 @@ namespace detail
   using cd_callback =
     std::function<void(graph_link const&, graph const&)>;
 
-  class cd_visitor : public boost::default_dfs_visitor
+  class cd_visitor : public dfs_visitor
   {
   public:
     cd_visitor(cd_callback const& callback) : back_edge(callback) {}

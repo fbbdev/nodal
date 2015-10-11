@@ -31,30 +31,11 @@
 namespace nodal
 {
 
-namespace detail
+class dfs_visitor : public boost::default_dfs_visitor
 {
-
-  template<typename Visitor>
-  struct dfs_visitor
-  {
-    template<typename T, void (Visitor::*)(context&)> struct check {};
-
-    template<typename T>
-    static void do_set_context(T& v, context& ctx, check<T, &T::context>*)
-    {
-      v.context(ctx);
-    }
-
-    template<typename T>
-    static void do_set_context(T& v, context& ctx, ...) {}
-
-    static void set_context(Visitor& v, context& ctx)
-    {
-      do_set_context(v, ctx, nullptr);
-    }
-  };
-
-}
+public:
+  void context(context& ctx) {}
+};
 
 template<typename Visitor>
 class depth_first_search_pass : public pass
@@ -74,7 +55,7 @@ template<typename Visitor>
 any depth_first_search_pass<Visitor>::run(graph& graph, context& ctx) const
 {
   Visitor v = visitor;
-  detail::dfs_visitor<Visitor>::set_context(v, ctx);
+  v.context(ctx);
 
   boost::depth_first_search(graph, v, boost::get(boost::vertex_color, graph));
 
