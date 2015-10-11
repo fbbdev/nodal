@@ -64,18 +64,6 @@ public:
   }
 
   template<typename T>
-  T& input(std::string const& key)
-  {
-    return *reinterpret_cast<T*>(input_ptr(key, sizeof(T)));
-  }
-
-  template<typename T>
-  T const& input(std::string const& key) const
-  {
-    return *reinterpret_cast<T const*>(input_ptr(key, sizeof(T)));
-  }
-
-  template<typename T>
   T& param(std::size_t index)
   {
     return *reinterpret_cast<T*>(param_ptr(index, sizeof(T)));
@@ -87,26 +75,11 @@ public:
     return *reinterpret_cast<T const*>(param_ptr(index, sizeof(T)));
   }
 
-  template<typename T>
-  T& param(std::string const& key)
-  {
-    return *reinterpret_cast<T*>(param_ptr(key, sizeof(T)));
-  }
-
-  template<typename T>
-  T const& param(std::string const& key) const
-  {
-    return *reinterpret_cast<T const*>(param_ptr(key, sizeof(T)));
-  }
-
 private:
   virtual void* data_ptr(std::size_t size) const;
 
   virtual void* input_ptr(std::size_t index, std::size_t size) const;
-  virtual void* input_ptr(std::string const& key, std::size_t size) const;
-
   virtual void* param_ptr(std::size_t index, std::size_t size) const;
-  virtual void* param_ptr(std::string const& key, std::size_t size) const;
 };
 
 template<typename T, std::ptrdiff_t Offset>
@@ -139,15 +112,15 @@ namespace detail
 {
 
   template<typename T, typename InputBlock, typename ParamBlock>
-  class node_data_impl : public node_data
+  class struct_node_data_impl : public node_data
   {
   public:
     template<typename... Args>
-    node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
+    struct_node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
 
     node_data* clone() const override
     {
-      return new node_data_impl(data);
+      return new struct_node_data_impl(data);
     }
 
     T data;
@@ -164,7 +137,7 @@ namespace detail
     void* input_ptr(std::size_t index, std::size_t size) const override
     {
       if (index >= InputBlock::field_count)
-        throw std::out_of_range("node_data_impl::input_ptr");
+        throw std::out_of_range("struct_node_data_impl::input_ptr");
 
       if (size != InputBlock::field_size[index])
         throw std::bad_cast();
@@ -177,7 +150,7 @@ namespace detail
     void* param_ptr(std::size_t index, std::size_t size) const override
     {
       if (index >= ParamBlock::field_count)
-        throw std::out_of_range("node_data_impl::param_ptr");
+        throw std::out_of_range("struct_node_data_impl::param_ptr");
 
       if (size != ParamBlock::field_size[index])
         throw std::bad_cast();
@@ -189,15 +162,15 @@ namespace detail
   };
 
   template<typename T, typename InputBlock>
-  class node_data_impl<T, InputBlock, no_data_block> : public node_data
+  class struct_node_data_impl<T, InputBlock, no_data_block> : public node_data
   {
   public:
     template<typename... Args>
-    node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
+    struct_node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
 
     node_data* clone() const override
     {
-      return new node_data_impl(data);
+      return new struct_node_data_impl(data);
     }
 
     T data;
@@ -214,7 +187,7 @@ namespace detail
     void* input_ptr(std::size_t index, std::size_t size) const override
     {
       if (index >= InputBlock::field_count)
-        throw std::out_of_range("node_data_impl::input_ptr");
+        throw std::out_of_range("struct_node_data_impl::input_ptr");
 
       if (size != InputBlock::field_size[index])
         throw std::bad_cast();
@@ -226,15 +199,15 @@ namespace detail
   };
 
   template<typename T, typename ParamBlock>
-  class node_data_impl<T, no_data_block, ParamBlock> : public node_data
+  class struct_node_data_impl<T, no_data_block, ParamBlock> : public node_data
   {
   public:
     template<typename... Args>
-    node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
+    struct_node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
 
     node_data* clone() const override
     {
-      return new node_data_impl(data);
+      return new struct_node_data_impl(data);
     }
 
     T data;
@@ -251,7 +224,7 @@ namespace detail
     void* param_ptr(std::size_t index, std::size_t size) const override
     {
       if (index >= ParamBlock::field_count)
-        throw std::out_of_range("node_data_impl::param_ptr");
+        throw std::out_of_range("struct_node_data_impl::param_ptr");
 
       if (size != ParamBlock::field_size[index])
         throw std::bad_cast();
@@ -263,15 +236,15 @@ namespace detail
   };
 
   template<typename T>
-  class node_data_impl<T, no_data_block, no_data_block> : public node_data
+  class struct_node_data_impl<T, no_data_block, no_data_block> : public node_data
   {
   public:
     template<typename... Args>
-    node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
+    struct_node_data_impl(Args&&... args) : data(std::forward<Args>(args)...) {}
 
     node_data* clone() const override
     {
-      return new node_data_impl(data);
+      return new struct_node_data_impl(data);
     }
 
     T data;
@@ -292,9 +265,9 @@ template<typename T,
          typename InputBlock,
          typename ParamBlock,
          typename... Args>
-node_data* make_node_data(Args&&... args)
+node_data* struct_node_data(Args&&... args)
 {
-  return new detail::node_data_impl<T, InputBlock, ParamBlock>(
+  return new detail::struct_node_data_impl<T, InputBlock, ParamBlock>(
     std::forward<Args>(args)...);
 }
 

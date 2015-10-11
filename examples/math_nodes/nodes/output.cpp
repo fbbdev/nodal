@@ -28,7 +28,7 @@ using namespace nodal;
 
 node_data* output_node::data() const
 {
-  return make_node_data<
+  return struct_node_data<
     data_t,
     data_block<
       data_field<double, offsetof(data_t, value)>

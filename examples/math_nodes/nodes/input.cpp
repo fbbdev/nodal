@@ -30,7 +30,7 @@ using namespace nodal;
 
 node_data* input_node::data() const
 {
-  return make_node_data<
+  return struct_node_data<
     data_t,
     no_data_block,
     data_block<

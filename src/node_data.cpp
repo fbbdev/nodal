@@ -33,20 +33,10 @@ void* node_data::data_ptr(std::size_t) const
 
 void* node_data::input_ptr(std::size_t, std::size_t) const
 {
-  throw std::logic_error("node_data::input_ptr(index)");
-}
-
-void* node_data::input_ptr(std::string const&, std::size_t) const
-{
-  throw std::logic_error("node_data::input_ptr(string)");
+  throw std::logic_error("node_data::input_ptr()");
 }
 
 void* node_data::param_ptr(std::size_t, std::size_t) const
 {
-  throw std::logic_error("node_data::param_ptr(index)");
-}
-
-void* node_data::param_ptr(std::string const&, std::size_t) const
-{
-  throw std::logic_error("node_data::param_ptr(string)");
+  throw std::logic_error("node_data::param_ptr()");
 }
