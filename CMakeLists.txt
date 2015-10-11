@@ -43,6 +43,7 @@ set(SOURCES
   src/graph_link.cpp
   src/graph_node.cpp
   src/node_data.cpp
+  src/types.cpp
 
   src/passes/dead_branch_removal.cpp
 )
@@ -54,17 +55,22 @@ set(HEADERS
   include/nodal/graph.h
   include/nodal/graph_link.h
   include/nodal/graph_node.h
+  include/nodal/nodal.h
   include/nodal/node.h
   include/nodal/node_data.h
-
-  include/nodal/detail/graph_access.h
-  include/nodal/detail/graph_properties.h
-  include/nodal/detail/link_list.h
+  include/nodal/type.h
+  include/nodal/typed_node.h
+  include/nodal/types.h
 
   include/nodal/passes/cycle_detection.h
   include/nodal/passes/dead_branch_removal.h
   include/nodal/passes/depth_first_search.h
   include/nodal/passes/topological_sort.h
+
+  include/nodal/detail/generic_type.h
+  include/nodal/detail/graph_access.h
+  include/nodal/detail/graph_properties.h
+  include/nodal/detail/link_list.h
 )
 
 if(BUILD_SHARED_LIBS AND MSVC)
