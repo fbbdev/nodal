@@ -24,10 +24,10 @@
 
 #pragma once
 
-#include "../type.h"
-
 #include <boost/lexical_cast.hpp>
 
+#include <algorithm>
+#include <iterator>
 #include <type_traits>
 
 namespace nodal
@@ -48,7 +48,7 @@ namespace detail
   template<typename C>
   struct is_container<C, typename exists<typename C::value_type>::type,
                       typename exists<decltype(std::declval<C>().begin())>::type,
-                      typename exists<decltype(std::declval<C>().begin())>::type>
+                      typename exists<decltype(std::declval<C>().end())>::type>
     : std::true_type {};
 
   template<>
@@ -137,6 +137,7 @@ namespace detail
     static constexpr std::size_t vector_size = N;
   };
 
+  // XXX: This should never happen, at least in C++14 ...
   template<typename T, std::size_t N>
   struct generic_type_traits<T[N], true> : generic_type_traits<T[N], false> {};
 
@@ -204,6 +205,19 @@ namespace detail
     return type::none;
   }
 
+  template<typename T>
+  inline void generic_type_destroy(T& value)
+  {
+    value.~T();
+  }
+
+  template<typename T, std::size_t N>
+  inline void generic_type_destroy(T (& vector)[N])
+  {
+    for (auto& element: vector)
+      element.~T();
+  }
+
   template<typename From, typename To>
   struct explicitly_convertible
   {
@@ -228,9 +242,14 @@ namespace detail
   {
     static constexpr bool t = std::is_same<To, std::string>::value;
     static constexpr bool u = std::is_same<From, std::string>::value;
-    static constexpr bool np = !std::is_pointer<To>::value;
+    static constexpr bool convertible =
+      !std::is_pointer<To>::value &&
+      ((boost::has_left_shift<std::ostream, From>::value &&
+        boost::has_right_shift<std::istream, To>::value) ||
+       (boost::has_left_shift<std::wostream, From>::value &&
+        boost::has_right_shift<std::wistream, To>::value));
 
-    static constexpr bool value = np && ((t && !u) || (u && !t));
+    static constexpr bool value = convertible && ((t && !u) || (u && !t));
   };
 
   template<typename To, typename From>
@@ -321,18 +340,108 @@ namespace detail
       dest = result;
   }
 
-  void generic_type_assign(std::string& dest, bool const& value)
+  inline void generic_type_assign(std::string& dest, bool const& value)
   {
     dest = value ? "true" : "false";
   }
 
-  void generic_type_assign(bool& dest, std::string const& value)
+  inline void generic_type_assign(bool& dest, std::string const& value)
   {
     if (value == "true")
       dest = true;
     else if (value == "false")
       dest = false;
   }
+
+  template<typename Repr, typename Type,
+           bool = generic_type_traits<Type>::is_vector ||
+                  generic_type_traits<Type>::is_list>
+  struct convertible_to_vector
+  {
+    constexpr static bool value = false;
+  };
+
+  template<typename Repr, typename Type>
+  struct convertible_to_vector<Repr, Type, true>
+  {
+    using VT = typename generic_type_traits<Type>::value_type;
+    constexpr static bool value = from_or_to_string<Repr, VT>::value ||
+                                  (explicitly_convertible<VT, Repr>::value &&
+                                   explicitly_convertible<Repr, VT>::value);
+  };
+
+  template<typename C, typename = void>
+  struct has_resize : std::false_type {};
+
+  template<typename C>
+  struct has_resize<
+    C, typename exists<decltype(std::declval<C>().resize(0))>::type>
+    : std::true_type {};
+
+  template<typename Repr, typename Type>
+  inline typename std::enable_if<
+    convertible_to_vector<Repr, Type>::value, std::vector<Repr>>::type
+  generic_type_cast_to_vector(Type const& value)
+  {
+    using namespace std;
+
+    std::vector<Repr> result;
+    std::transform(
+      begin(value), end(value), std::back_inserter(result),
+      generic_type_cast<Repr, typename generic_type_traits<Type>::value_type>);
+
+    return result;
+  }
+
+  template<typename Repr, typename Type>
+  inline typename std::enable_if<
+    !convertible_to_vector<Repr, Type>::value, std::vector<Repr>>::type
+  generic_type_cast_to_vector(Type const& value)
+  {
+    return {};
+  }
+
+  template<typename Repr, typename Type>
+  inline typename std::enable_if<
+    convertible_to_vector<Repr, Type>::value &&
+    generic_type_traits<Type>::is_vector>::type
+  generic_type_assign_from_vector(Type& dest, std::vector<Repr> const& value)
+  {
+    auto end = std::min(generic_type_traits<Type>::vector_size, value.size());
+    for (std::size_t i = 0; i < end; ++i)
+      generic_type_assign(dest[i], value[i]);
+  }
+
+  template<typename Repr, typename Type>
+  inline typename std::enable_if<
+    convertible_to_vector<Repr, Type>::value &&
+    generic_type_traits<Type>::is_list &&
+    has_resize<Type>::value>::type
+  generic_type_assign_from_vector(Type& dest, std::vector<Repr> const& value)
+  {
+    dest.resize(value.size());
+
+    auto dst = dest.begin();
+    for (auto src = value.begin(), end = value.end(); src != end; ++src, ++dst)
+      generic_type_assign(*dst, *src);
+  }
+
+  template<typename Repr, typename Type>
+  inline typename std::enable_if<
+    convertible_to_vector<Repr, Type>::value &&
+    generic_type_traits<Type>::is_list &&
+    !has_resize<Type>::value>::type // e.g. map/set
+  generic_type_assign_from_vector(Type& dest, std::vector<Repr> const& value)
+  {
+    std::vector<typename Type::value_type> temp;
+    generic_type_assign_from_vector(temp, value);
+    dest = Type{temp.begin(), temp.end()};
+  }
+
+  template<typename Repr, typename Type>
+  inline typename std::enable_if<
+    !convertible_to_vector<Repr, Type>::value>::type
+  generic_type_assign_from_vector(Type& dest, std::vector<Repr> const& value) {}
 
   template<typename Type>
   inline void* generic_type_as_pointer(Type const& value)
@@ -357,6 +466,84 @@ namespace detail
   {
     dest = reinterpret_cast<Type*>(pointer);
   }
+
+  template<typename Type, std::size_t N>
+  inline void generic_type_from_pointer(Type (& dest)[N], void* pointer)
+  {
+    using namespace std;
+
+    auto src = reinterpret_cast<typename std::add_pointer<Type[N]>::type>(pointer);
+    std::copy(begin(*src), end(*src), begin(dest));
+  }
+
+  template<typename Type>
+  inline typename std::enable_if<
+    generic_type_traits<Type>::is_vector ||
+    generic_type_traits<Type>::is_list,
+    std::vector<void*>>::type
+  generic_type_as_pointer_vector(Type const& value)
+  {
+    using namespace std;
+
+    std::vector<void*> result;
+    std::transform(
+      begin(value), end(value), std::back_inserter(result),
+      static_cast<
+        void* (&)(typename generic_type_traits<Type>::value_type const&)>(
+          generic_type_as_pointer<typename generic_type_traits<Type>::value_type>));
+
+    return result;
+  }
+
+  template<typename Type>
+  inline typename std::enable_if<
+    !(generic_type_traits<Type>::is_vector ||
+      generic_type_traits<Type>::is_list),
+    std::vector<void*>>::type
+  generic_type_as_pointer_vector(Type const& value)
+  {
+    return {};
+  }
+
+  template<typename Type>
+  inline typename std::enable_if<
+    generic_type_traits<Type>::is_vector>::type
+  generic_type_from_pointer_vector(Type& dest, std::vector<void*> const& value)
+  {
+    auto end = std::min(generic_type_traits<Type>::vector_size, value.size());
+    for (std::size_t i = 0; i < end; ++i)
+      generic_type_from_pointer(dest[i], value[i]);
+  }
+
+  template<typename Type>
+  inline typename std::enable_if<
+    generic_type_traits<Type>::is_list &&
+    has_resize<Type>::value>::type
+  generic_type_from_pointer_vector(Type& dest, std::vector<void*> const& value)
+  {
+    dest.resize(value.size());
+
+    auto dst = dest.begin();
+    for (auto src = value.begin(), end = value.end(); src != end; ++src, ++dst)
+      generic_type_from_pointer(*dst, *src);
+  }
+
+  template<typename Type>
+  inline typename std::enable_if<
+    generic_type_traits<Type>::is_list &&
+    !has_resize<Type>::value>::type
+  generic_type_from_pointer_vector(Type& dest, std::vector<void*> const& value)
+  {
+    std::vector<typename Type::value_type> temp;
+    generic_type_from_pointer_vector(temp, value);
+    dest = Type{temp.begin(), temp.end()};
+  }
+
+  template<typename Type>
+  inline typename std::enable_if<
+    !(generic_type_traits<Type>::is_vector ||
+      generic_type_traits<Type>::is_list)>::type
+  generic_type_from_pointer_vector(Type& dest, std::vector<void*> const& value) {}
 
 } /* namespace detail */
 

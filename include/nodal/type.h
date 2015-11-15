@@ -202,30 +202,45 @@ public:
     return { reinterpret_cast<Object**>(vector.data()), vector.size() };
   }
 
-  virtual void from_bool_vector(std::vector<bool> value, node_data* data,
-                                std::size_t index, bool param = false) const {}
+  virtual void from_bool_vector(std::vector<bool> const& value,
+                                node_data* data,
+                                std::size_t index,
+                                bool param = false) const {}
 
-  virtual void from_byte_vector(std::vector<std::uint8_t> value, node_data* data,
-                                std::size_t index, bool param = false) const {}
+  virtual void from_byte_vector(std::vector<std::uint8_t> const& value,
+                                node_data* data,
+                                std::size_t index,
+                                bool param = false) const {}
 
-  virtual void from_int_vector(std::vector<std::intmax_t> value, node_data* data,
-                               std::size_t index, bool param = false) const {}
+  virtual void from_int_vector(std::vector<std::intmax_t> const& value,
+                               node_data* data,
+                               std::size_t index,
+                               bool param = false) const {}
 
-  virtual void from_uint_vector(std::vector<std::uintmax_t> value, node_data* data,
-                                std::size_t index, bool param = false) const {}
+  virtual void from_uint_vector(std::vector<std::uintmax_t> const& value,
+                                node_data* data,
+                                std::size_t index,
+                                bool param = false) const {}
 
-  virtual void from_real_vector(std::vector<double> value, node_data* data,
-                                std::size_t index, bool param = false) const {}
+  virtual void from_real_vector(std::vector<double> const& value,
+                                node_data* data,
+                                std::size_t index,
+                                bool param = false) const {}
 
-  virtual void from_string_vector(std::vector<std::string> const& value, node_data* data,
-                                  std::size_t index, bool param = false) const {}
+  virtual void from_string_vector(std::vector<std::string> const& value,
+                                  node_data* data,
+                                  std::size_t index,
+                                  bool param = false) const {}
 
   template<typename Object>
-  void from_object_vector(std::vector<Object*> value, node_data* data,
+  void from_object_vector(std::vector<Object*> const& value, node_data* data,
                           std::size_t index, bool param = false) const
   {
-    from_pointer_vector({ reinterpret_cast<void**>(value.data()), value.size() },
-                        data, index, param);
+    from_pointer_vector(
+      std::vector<void*>{
+        reinterpret_cast<void* const*>(&*value.begin()),
+        reinterpret_cast<void* const*>(&*value.end()) },
+      data, index, param);
   }
 
   operator type*()
@@ -276,8 +291,10 @@ protected:
     return {};
   }
 
-  virtual void from_pointer_vector(std::vector<void*> value, node_data* data,
-                                   std::size_t index, bool param = false) const {}
+  virtual void from_pointer_vector(std::vector<void*> const& value,
+                                   node_data* data,
+                                   std::size_t index,
+                                   bool param = false) const {}
 };
 
 } /* namespace nodal */
