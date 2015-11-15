@@ -46,13 +46,13 @@ int main()
     auto in0  = g.add(nodes.input("in0", 0));
     auto in1  = g.add(nodes.input("in1", 1));
     auto in2  = g.add(nodes.input("in2", 2));
+    auto rnd  = g.add(nodes.random("rnd"));
     auto add  = g.add(nodes.math("add", math_node::add));
     auto sub  = g.add(nodes.math("sub", math_node::sub));
     auto mul  = g.add(nodes.math("mul", math_node::mul));
     auto mul2 = g.add(nodes.math("mul2", math_node::mul));
     auto div  = g.add(nodes.math("div", math_node::div));
     auto div2 = g.add(nodes.math("div2", math_node::div));
-    auto rnd  = g.add(nodes.random("rnd"));
     auto out0 = g.add(nodes.output("out0", 0));
     auto out1 = g.add(nodes.output("out1", 1));
     auto out2 = g.add(nodes.output("out2", 2));
