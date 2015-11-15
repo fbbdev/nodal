@@ -1,13 +1,20 @@
+sudo: false
 language: c++
-compiler:
-  - clang
-  - gcc
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-5
+      - g++-5
 before_install:
-  - sudo add-apt-repository ppa:boost-latest/ppa -y
-  - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
-  - sudo apt-get update -qq
-  - sudo apt-get purge -y cmake
-  - sudo apt-get install -y boost1.55 g++-5
-  - sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5.1 90
-  - mkdir tmp && cd tmp && wget http://www.cmake.org/files/v3.2/cmake-3.2.3-Linux-x86_64.sh && ./cmake-3.2.3-Linux-x86_64.sh --skip-license --prefix=/usr && cd .. && rm -rf tmp
-script: mkdir build && cd build && cmake -DBUILD_EXAMPLES=ON .. && make
+  - bash install_deps.sh
+  - export CC=gcc-5
+  - export CXX=g++-5
+  - export PATH="$HOME/deps/cmake/bin":"$PATH"
+  - export CMAKE_PREFIX_PATH="$HOME/deps/boost"
+cache:
+  directories:
+    - $HOME/deps
+script:
+  - mkdir build && cd build && cmake -DBUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Wno-deprecated-declarations .. && make -j2
