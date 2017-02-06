@@ -1,6 +1,6 @@
 # Nodal
 
-[![Build Status](https://travis-ci.org/nodal/nodal.svg?branch=master)](https://travis-ci.org/nodal/nodal)
+[![Build Status](https://travis-ci.org/fbbdev/nodal.svg?branch=master)](https://travis-ci.org/fbbdev/nodal)
 
 Nodal is a small C++ library offering a generic foundation for development of
 applications based on
