@@ -407,7 +407,8 @@ namespace detail
     generic_type_traits<Type>::is_vector>::type
   generic_type_assign_from_vector(Type& dest, std::vector<Repr> const& value)
   {
-    auto end = std::min(generic_type_traits<Type>::vector_size, value.size());
+    constexpr auto dest_size = generic_type_traits<Type>::vector_size;
+    auto end = std::min(dest_size, value.size());
     for (std::size_t i = 0; i < end; ++i)
       generic_type_assign(dest[i], value[i]);
   }
@@ -510,7 +511,8 @@ namespace detail
     generic_type_traits<Type>::is_vector>::type
   generic_type_from_pointer_vector(Type& dest, std::vector<void*> const& value)
   {
-    auto end = std::min(generic_type_traits<Type>::vector_size, value.size());
+    constexpr auto dest_size = generic_type_traits<Type>::vector_size;
+    auto end = std::min(dest_size, value.size());
     for (std::size_t i = 0; i < end; ++i)
       generic_type_from_pointer(dest[i], value[i]);
   }
