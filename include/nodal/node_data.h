@@ -82,19 +82,23 @@ private:
   virtual void* param_ptr(std::size_t index, std::size_t size) const;
 };
 
-template<typename T, std::ptrdiff_t Offset>
+template<typename S, typename T, T S::*Member>
 struct data_field
 {
   static constexpr std::size_t size = sizeof(T);
-  static constexpr std::ptrdiff_t offset = Offset;
+  static constexpr void* ptr(void* data) {
+    return &(reinterpret_cast<S*>(data)->*Member);
+  }
 };
 
 template<typename... Fields>
 struct data_block
 {
+  using ptr_fn_type = void*(*)(void*);
+
   static constexpr std::size_t field_count = sizeof...(Fields);
   static const std::size_t field_size[sizeof...(Fields)];
-  static const std::ptrdiff_t field_offset[sizeof...(Fields)];
+  static const ptr_fn_type field_ptr[sizeof...(Fields)];
 };
 
 template<typename... Fields>
@@ -102,8 +106,9 @@ const std::size_t data_block<Fields...>::field_size[sizeof...(Fields)] =
   { Fields::size... };
 
 template<typename... Fields>
-const std::ptrdiff_t data_block<Fields...>::field_offset[sizeof...(Fields)] =
-  { Fields::offset... };
+const typename data_block<Fields...>::ptr_fn_type
+data_block<Fields...>::field_ptr[sizeof...(Fields)] =
+  { &Fields::ptr... };
 
 template<> struct data_block<> {};
 using no_data_block = data_block<>;
@@ -142,9 +147,7 @@ namespace detail
       if (size != InputBlock::field_size[index])
         throw std::bad_cast();
 
-      return const_cast<char*>(
-        reinterpret_cast<char const*>(&data) +
-        InputBlock::field_offset[index]);
+      return InputBlock::field_ptr[index](const_cast<T*>(&data));
     }
 
     void* param_ptr(std::size_t index, std::size_t size) const override
@@ -155,9 +158,7 @@ namespace detail
       if (size != ParamBlock::field_size[index])
         throw std::bad_cast();
 
-      return const_cast<char*>(
-        reinterpret_cast<char const*>(&data) +
-        ParamBlock::field_offset[index]);
+      return ParamBlock::field_ptr[index](const_cast<T*>(&data));
     }
   };
 
@@ -192,9 +193,7 @@ namespace detail
       if (size != InputBlock::field_size[index])
         throw std::bad_cast();
 
-      return const_cast<char*>(
-        reinterpret_cast<char const*>(&data) +
-        InputBlock::field_offset[index]);
+      return InputBlock::field_ptr[index](const_cast<T*>(&data));
     }
   };
 
@@ -229,9 +228,7 @@ namespace detail
       if (size != ParamBlock::field_size[index])
         throw std::bad_cast();
 
-      return const_cast<char*>(
-        reinterpret_cast<char const*>(&data) +
-        ParamBlock::field_offset[index]);
+      return ParamBlock::field_ptr[index](const_cast<T*>(&data));
     }
   };
 

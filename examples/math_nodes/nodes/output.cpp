@@ -31,10 +31,10 @@ node_data* output_node::data() const
   return struct_node_data<
     data_t,
     data_block<
-      data_field<double, offsetof(data_t, value)>
+      data_field<data_t, double, &data_t::value>
     >,
     data_block<
-      data_field<std::size_t, offsetof(data_t, index)>
+      data_field<data_t, std::size_t, &data_t::index>
     >
   >(data_t{ 0.0, 0 });
 }

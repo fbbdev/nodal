@@ -34,11 +34,11 @@ node_data* math_node::data() const
   return struct_node_data<
     data_t,
     data_block<
-      data_field<double, offsetof(data_t, first)>,
-      data_field<double, offsetof(data_t, second)>
+      data_field<data_t, double, &data_t::first>,
+      data_field<data_t, double, &data_t::second>
     >,
     data_block<
-      data_field<function, offsetof(data_t, fn)>
+      data_field<data_t, function, &data_t::fn>
     >
   >(data_t{ 0.0, 0.0, first });
 }

@@ -34,7 +34,7 @@ node_data* input_node::data() const
     data_t,
     no_data_block,
     data_block<
-      data_field<std::size_t, offsetof(data_t, index)>
+      data_field<data_t, std::size_t, &data_t::index>
     >
   >(data_t{ 0 });
 }

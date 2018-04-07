@@ -105,11 +105,11 @@ int main()
   auto data = struct_node_data<
     Data,
     data_block<
-      data_field<int, offsetof(Data, num)>,
-      data_field<float[3], offsetof(Data, vec)>>,
+      data_field<Data, int, &Data::num>,
+      data_field<Data, float[3], &Data::vec>>,
     data_block<
-      data_field<std::set<Data*>, offsetof(Data, structs)>,
-      data_field<std::vector<std::string>, offsetof(Data, names)>>>();
+      data_field<Data, std::set<Data*>, &Data::structs>,
+      data_field<Data, std::vector<std::string>, &Data::names>>>();
 
   types::integer->from_real(4355.76, data, 0);
   std::cout << '"' << types::integer->as_string(data, 0) << '"' << std::endl;
