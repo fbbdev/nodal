@@ -34,10 +34,11 @@
 
 using node_fn = std::function<double*(double*, context const&)>;
 
-class node : public nodal::node
-{
+class node : public nodal::node {
 public:
-  virtual node_fn compile(nodal::node_data* data) const = 0;
+    virtual node_fn compile(nodal::node_data* data) const = 0;
 
-  virtual bool keep() const { return false; }
+    virtual bool keep() const {
+        return false;
+    }
 };

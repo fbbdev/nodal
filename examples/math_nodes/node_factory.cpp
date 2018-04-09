@@ -25,39 +25,35 @@
 #include "node_factory.h"
 
 nodal::graph_node* node_factory::input(std::string const& name,
-                                        std::size_t index) const
-{
-  auto n = new nodal::graph_node(input_n);
-  n->attribute("name") = name;
-  n->data()->param<std::size_t>(0) = index;
+                                       std::size_t index) const {
+    auto n = new nodal::graph_node(input_n);
+    n->attribute("name") = name;
+    n->data()->param<std::size_t>(0) = index;
 
-  return n;
+    return n;
 }
 
 nodal::graph_node* node_factory::output(std::string const& name,
-                                        std::size_t index) const
-{
-  auto n = new nodal::graph_node(output_n);
-  n->attribute("name") = name;
-  n->data()->param<std::size_t>(0) = index;
+                                        std::size_t index) const {
+    auto n = new nodal::graph_node(output_n);
+    n->attribute("name") = name;
+    n->data()->param<std::size_t>(0) = index;
 
-  return n;
+    return n;
 }
 
 nodal::graph_node* node_factory::math(std::string const& name,
-                                      math_node::function fn) const
-{
-  auto n = new nodal::graph_node(math_n);
-  n->attribute("name") = name;
-  n->data()->param<math_node::function>(0) = fn;
+                                      math_node::function fn) const {
+    auto n = new nodal::graph_node(math_n);
+    n->attribute("name") = name;
+    n->data()->param<math_node::function>(0) = fn;
 
-  return n;
+    return n;
 }
 
-nodal::graph_node* node_factory::random(std::string const& name) const
-{
-  auto n = new nodal::graph_node(random_n);
-  n->attribute("name") = name;
+nodal::graph_node* node_factory::random(std::string const& name) const {
+    auto n = new nodal::graph_node(random_n);
+    n->attribute("name") = name;
 
-  return n;
+    return n;
 }

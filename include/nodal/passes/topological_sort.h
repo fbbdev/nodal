@@ -30,26 +30,26 @@
 
 #include <iterator>
 
-namespace nodal {
-
-template<typename Container>
-class topological_sort_pass : public pass
+namespace nodal
 {
-public:
-  using result_type = Container;
 
-  any run(graph& graph, context& ctx) const override;
+template <typename Container>
+class topological_sort_pass : public pass {
+public:
+    using result_type = Container;
+
+    any run(graph& graph, context& ctx) const override;
 };
 
-template<typename Container>
-any topological_sort_pass<Container>::run(graph& graph, context& ctx) const
-{
-  Container c;
+template <typename Container>
+any topological_sort_pass<Container>::run(graph& graph, context& ctx) const {
+    Container c;
 
-  boost::topological_sort(graph, std::front_inserter(c),
-    boost::color_map(boost::get(boost::vertex_color, graph)));
+    boost::topological_sort(
+        graph, std::front_inserter(c),
+        boost::color_map(boost::get(boost::vertex_color, graph)));
 
-  return std::move(c);
+    return std::move(c);
 }
 
 } /* namespace nodal */

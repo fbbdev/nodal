@@ -24,25 +24,25 @@ cmake_minimum_required(VERSION 3.2)
 project(nodal-example-type-usage CXX C)
 
 if(NOT BUILDING_NODAL)
-  list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../cmake")
+    list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../cmake")
 
-  include(EnableCXX14)
-  include(ConfigureSourceDefinitions)
-  include(GNUInstallDirs)
+    include(GNUInstallDirs)
+    include(EnableCXX14)
+    include(ConfigureSourceDefinitions)
 
-  find_package(nodal REQUIRED)
+    find_package(nodal REQUIRED)
 endif()
 
 set(SOURCES
-  main.cpp
+    main.cpp
 )
 
 set(HEADERS
 )
 
 configure_source_definitions(
-  "__NODAL_EXAMPLE_TYPE_USAGE_BUILDING_@id@__"
-  ${SOURCES})
+    "__NODAL_EXAMPLE_TYPE_USAGE_BUILDING_@id@__"
+    ${SOURCES})
 
 add_executable(nodal-example-type-usage ${SOURCES} ${HEADERS})
 
@@ -50,7 +50,7 @@ enable_cxx14(nodal-example-type-usage)
 target_link_libraries(nodal-example-type-usage nodal)
 
 set_property(TARGET nodal-example-type-usage
-  PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+             PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
 
 install(TARGETS nodal-example-type-usage
         RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")

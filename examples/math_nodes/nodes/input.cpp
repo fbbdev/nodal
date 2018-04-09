@@ -28,23 +28,18 @@
 
 using namespace nodal;
 
-node_data* input_node::data() const
-{
-  return struct_node_data<
-    data_t,
-    no_data_block,
-    data_block<
-      data_field<data_t, std::size_t, &data_t::index>
-    >
-  >(data_t{ 0 });
+node_data* input_node::data() const {
+    return struct_node_data<
+        data_t,
+        no_data_block,
+        data_block<data_field<data_t, std::size_t, &data_t::index>>
+    >(data_t{ 0 });
 }
 
-node_fn input_node::compile(node_data* data) const
-{
-  auto index = data->param<std::size_t>(0);
+node_fn input_node::compile(node_data* data) const {
+    auto index = data->param<std::size_t>(0);
 
-  return [index](double*, context const& context)
-  {
-    return new double[1]{ context.inputs[index] };
-  };
+    return [index](double*, context const& context) {
+        return new double[1]{ context.inputs[index] };
+    };
 }

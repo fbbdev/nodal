@@ -31,43 +31,46 @@
 namespace nodal
 {
 
-class graph_node
-{
+class graph_node {
 public:
-  graph_node(class node const* node);
+    graph_node(class node const* node);
 
-  graph_node(graph_node const& other);
-  graph_node(graph_node&& other);
+    graph_node(graph_node const& other);
+    graph_node(graph_node&& other);
 
-  ~graph_node();
+    ~graph_node();
 
-  graph_node& operator=(graph_node const& other);
-  graph_node& operator=(graph_node&& other);
+    graph_node& operator=(graph_node const& other);
+    graph_node& operator=(graph_node&& other);
 
-  class node const* node() const { return node_; }
+    class node const* node() const {
+        return node_;
+    }
 
-  node_data* data() { return data_; }
-  node_data const* data() const { return data_; }
+    node_data* data() {
+        return data_;
+    }
 
-  attribute_value& attribute(attribute_key const& key)
-  {
-    return attributes[key];
-  }
+    node_data const* data() const {
+        return data_;
+    }
 
-  attribute_value const& attribute(attribute_key const& key) const
-  {
-    return attributes.at(key);
-  }
+    attribute_value& attribute(attribute_key const& key) {
+        return attributes[key];
+    }
 
-  bool has_attribute(attribute_key const& key) const
-  {
-    return attributes.count(key);
-  }
+    attribute_value const& attribute(attribute_key const& key) const {
+        return attributes.at(key);
+    }
+
+    bool has_attribute(attribute_key const& key) const {
+        return attributes.count(key);
+    }
 
 private:
-  class node const* node_;
-  node_data* data_;
-  attribute_map attributes;
+    class node const* node_;
+    node_data* data_;
+    attribute_map attributes;
 };
 
 } /* namespace nodal */

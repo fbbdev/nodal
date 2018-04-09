@@ -31,110 +31,107 @@ using namespace nodal;
 
 struct Data
 {
-  int num;
-  float vec[3];
+    int num;
+    float vec[3];
 
-  std::set<Data*> structs;
-  std::vector<std::string> names;
+    std::set<Data*> structs;
+    std::vector<std::string> names;
 };
 
-std::ostream& operator<<(std::ostream& stream, Data const& data)
-{
-  stream <<
-    "{\n"
-    "  num: " << data.num << ",\n"
-    "  vec: [ " << data.vec[0] << ", "
-                << data.vec[1] << ", "
-                << data.vec[2] << " ],\n\n"
-    "  structs: [";
+std::ostream& operator<<(std::ostream& stream, Data const& data) {
+    stream <<
+        "{\n"
+        "  num: " << data.num << ",\n"
+        "  vec: [ " << data.vec[0] << ", "
+                    << data.vec[1] << ", "
+                    << data.vec[2] << " ],\n\n"
+        "  structs: [";
 
-  if (data.structs.size()) {
-    stream << "\n    " << reinterpret_cast<void*>(*data.structs.begin());
+    if (data.structs.size()) {
+        stream << "\n    " << reinterpret_cast<void*>(*data.structs.begin());
 
-    auto it = data.structs.begin(); ++it;
-    for (auto end = data.structs.end(); it != end; ++it)
-      stream << ",\n    " << reinterpret_cast<void*>(*it);
-  }
+        auto it = data.structs.begin(); ++it;
+        for (auto end = data.structs.end(); it != end; ++it)
+            stream << ",\n    " << reinterpret_cast<void*>(*it);
+    }
 
-  stream <<
-  "\n  ],\n"
-    "  names: [";
+    stream <<
+        "\n  ],\n"
+        "  names: [";
 
-  if (data.names.size()) {
-    stream << "\n    \"" << data.names.front() << '"';
-    for (auto it = data.names.begin() + 1, end = data.names.end();
-         it != end; ++it)
-      stream << ",\n    \"" << *it << '"';
-  }
+    if (data.names.size()) {
+        stream << "\n    \"" << data.names.front() << '"';
+        for (auto it = data.names.begin() + 1, end = data.names.end();
+             it != end; ++it) {
+            stream << ",\n    \"" << *it << '"';
+        }
+    }
 
-  return stream <<
-  "\n  ]\n"
-    "}";
+    return stream <<
+        "\n  ]\n"
+        "}";
 }
 
 template<typename T>
-std::ostream& operator<<(std::ostream& stream, std::vector<T> const& vector)
-{
-  stream << "[";
+std::ostream& operator<<(std::ostream& stream, std::vector<T> const& vector) {
+    stream << "[";
 
-  if (vector.size()) {
-    stream << "\n  " << vector.front();
-    for (auto it = vector.begin() + 1, end = vector.end(); it != end; ++it)
-      stream << ",\n  " << *it;
+    if (vector.size()) {
+      stream << "\n  " << vector.front();
+      for (auto it = vector.begin() + 1, end = vector.end(); it != end; ++it)
+          stream << ",\n  " << *it;
+    }
+
+    return stream << "\n]";
   }
-
-  return stream << "\n]";
-}
 
 std::ostream& operator<<(std::ostream& stream,
-                         std::vector<std::string> const& vector)
-{
-  stream << "[";
+                         std::vector<std::string> const& vector) {
+    stream << "[";
 
-  if (vector.size()) {
-    stream << "\n  \"" << vector.front() << '"';
-    for (auto it = vector.begin() + 1, end = vector.end(); it != end; ++it)
-      stream << ",\n  \"" << *it << '"';
-  }
+    if (vector.size()) {
+        stream << "\n  \"" << vector.front() << '"';
+        for (auto it = vector.begin() + 1, end = vector.end(); it != end; ++it)
+            stream << ",\n  \"" << *it << '"';
+    }
 
-  return stream << "\n]";
+    return stream << "\n]";
 }
 
-int main()
-{
-  auto data = struct_node_data<
-    Data,
-    data_block<
-      data_field<Data, int, &Data::num>,
-      data_field<Data, float[3], &Data::vec>>,
-    data_block<
-      data_field<Data, std::set<Data*>, &Data::structs>,
-      data_field<Data, std::vector<std::string>, &Data::names>>>();
+int main() {
+    auto data = struct_node_data<
+        Data,
+        data_block<
+            data_field<Data, int, &Data::num>,
+            data_field<Data, float[3], &Data::vec>>,
+        data_block<
+            data_field<Data, std::set<Data*>, &Data::structs>,
+            data_field<Data, std::vector<std::string>, &Data::names>>>();
 
-  types::integer->from_real(4355.76, data, 0);
-  std::cout << '"' << types::integer->as_string(data, 0) << '"' << std::endl;
+    types::integer->from_real(4355.76, data, 0);
+    std::cout << '"' << types::integer->as_string(data, 0) << '"' << std::endl;
 
-  generic_type<float[3]> vector_type;
+    generic_type<float[3]> vector_type;
 
-  vector_type->from_int_vector({ 11, 12, 13 }, data, 1);
-  std::cout << vector_type->as_real_vector(data, 1) << std::endl;
+    vector_type->from_int_vector({ 11, 12, 13 }, data, 1);
+    std::cout << vector_type.as_real_vector(data, 1) << std::endl;
 
-  vector_type->from_real_vector({ 11.45, 1.5e+20, 13 }, data, 1);
-  std::cout << vector_type->as_uint_vector(data, 1) << "\n"
-            << vector_type->as_string_vector(data, 1) << std::endl;
+    vector_type->from_real_vector({ 11.45, 1.5e+20, 13 }, data, 1);
+    std::cout << vector_type.as_uint_vector(data, 1) << "\n"
+              << vector_type.as_string_vector(data, 1) << std::endl;
 
-  generic_type<std::set<Data*>> ptr_set_type;
+    generic_type<std::set<Data*>> ptr_set_type;
 
-  Data d1, d2, d3;
-  ptr_set_type->from_object_vector<Data>({ &d1, &d2, &d3 }, data, 0, true);
+    Data d1, d2, d3;
+    ptr_set_type->from_object_vector<Data>({ &d1, &d2, &d3 }, data, 0, true);
 
-  generic_type<std::vector<std::string>> string_list_type;
+    generic_type<std::vector<std::string>> string_list_type;
 
-  string_list_type->from_bool_vector({ true, false, false, true }, data, 1, true);
-  std::cout << string_list_type->as_bool_vector(data, 1, true) << std::endl;
+    string_list_type->from_bool_vector({ true, false, false, true }, data, 1, true);
+    std::cout << string_list_type.as_bool_vector(data, 1, true) << std::endl;
 
-  std::cout << data->data<Data>() << std::endl;
+    std::cout << data->data<Data>() << std::endl;
 
-  delete data;
-  return 0;
+    delete data;
+    return 0;
 }

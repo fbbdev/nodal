@@ -26,37 +26,34 @@
 
 using namespace nodal;
 
-void context::set(std::type_index const& pass, any&& data)
-{
-  pass_data[pass] = std::move(data);
+void context::set(std::type_index const& pass, any&& data) {
+    pass_data[pass] = std::move(data);
 }
 
-any context::get(std::type_index const& pass) const
-{
-  if (pass_data.count(pass))
-    return pass_data.at(pass);
-  else
-    return {};
+any context::get(std::type_index const& pass) const {
+    if (pass_data.count(pass))
+        return pass_data.at(pass);
+    else
+        return {};
 }
 
-compiler::~compiler()
-{
-  for (auto pass: *this)
-    if (pass) delete pass;
+compiler::~compiler() {
+    for (auto pass : *this)
+        if (pass)
+            delete pass;
 }
 
-any compiler::run(graph& graph, context& ctx) const
-{
-  pass* last_pass;
+any compiler::run(graph& graph, context& ctx) const {
+    pass* last_pass;
 
-  for (auto const& pass: *this) {
-    auto result = pass->run(graph, ctx);
+    for (auto const& pass : *this) {
+        auto result = pass->run(graph, ctx);
 
-    if (!result.empty())
-      ctx.set(typeid(*pass), std::move(result));
+        if (!result.empty())
+            ctx.set(typeid(*pass), std::move(result));
 
-    last_pass = pass;
-  }
+        last_pass = pass;
+    }
 
-  return ctx.get(typeid(*last_pass));
+    return ctx.get(typeid(*last_pass));
 }

@@ -31,55 +31,50 @@ using namespace nodal;
 namespace
 {
 
-  class dbr_visitor : public boost::default_dfs_visitor
-  {
-  public:
+class dbr_visitor : public boost::default_dfs_visitor {
+public:
     dbr_visitor(std::function<bool(graph_node const* n)> const& keep)
-      : keep(keep)
-      {}
+        : keep(keep)
+        {}
 
-    void initialize_vertex(graph_node* n, graph const& g) const
-    {
-      n->attribute("use_count") = g.output_degree(n);
-      n->attribute("dead") = false;
+    void initialize_vertex(graph_node* n, graph const& g) const {
+        n->attribute("use_count") = g.output_degree(n);
+        n->attribute("dead") = false;
     }
 
-    void finish_vertex(graph_node* n, graph const& g) const
-    {
-      if (keep)
-        if (keep(n))
-          return;
+    void finish_vertex(graph_node* n, graph const& g) const {
+        if (keep && keep(n))
+            return;
 
-      if (n->attribute("use_count").cast<std::size_t>() < 1) {
-        n->attribute("dead") = true;
+        if (n->attribute("use_count").cast<std::size_t>() < 1) {
+            n->attribute("dead") = true;
 
-        auto links = g.input_links(n);
+            auto links = g.input_links(n);
 
-        for (auto link = links.first; link != links.second; ++link) {
-          auto& c = link->source_node->attribute("use_count");
-          c = c.cast<std::size_t>() - 1;
+            for (auto link = links.first; link != links.second; ++link) {
+                auto& c = link->source_node->attribute("use_count");
+                c = c.cast<std::size_t>() - 1;
+            }
         }
-      }
     }
 
-  private:
+private:
     std::function<bool(graph_node const* n)> const& keep;
-  };
+};
 
 } /* namespace */
 
-any dead_branch_removal_pass::run(graph& graph, context& ctx) const
-{
-  boost::depth_first_search(graph, dbr_visitor(keep),
-                            boost::get(boost::vertex_color, graph));
+any dead_branch_removal_pass::run(graph& graph, context& ctx) const {
+    boost::depth_first_search(graph, dbr_visitor(keep),
+                              boost::get(boost::vertex_color, graph));
 
-  auto nodes = graph.nodes();
-  for (auto node = nodes.first; node != nodes.second;) {
-    if ((*node)->attribute("dead"))
-      node = graph.remove(node);
-    else
-      ++node;
-  }
+    auto nodes = graph.nodes();
+    for (auto node = nodes.first; node != nodes.second;) {
+        if ((*node)->attribute("dead"))
+            node = graph.remove(node);
+        else
+            ++node;
+    }
 
-  return {};
+    return {};
 }

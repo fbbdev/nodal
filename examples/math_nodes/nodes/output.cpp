@@ -26,26 +26,19 @@
 
 using namespace nodal;
 
-node_data* output_node::data() const
-{
-  return struct_node_data<
-    data_t,
-    data_block<
-      data_field<data_t, double, &data_t::value>
-    >,
-    data_block<
-      data_field<data_t, std::size_t, &data_t::index>
-    >
-  >(data_t{ 0.0, 0 });
+node_data* output_node::data() const {
+    return struct_node_data<
+        data_t,
+        data_block<data_field<data_t, double, &data_t::value>>,
+        data_block<data_field<data_t, std::size_t, &data_t::index>>
+    >(data_t{ 0.0, 0 });
 }
 
-node_fn output_node::compile(node_data* data) const
-{
-  auto index = data->param<std::size_t>(0);
+node_fn output_node::compile(node_data* data) const {
+    auto index = data->param<std::size_t>(0);
 
-  return [index](double* inputs, context const& context) -> double*
-  {
-    context.outputs[index] = inputs[0];
-    return nullptr;
-  };
+    return [index](double* inputs, context const& context) -> double* {
+        context.outputs[index] = inputs[0];
+        return nullptr;
+    };
 }

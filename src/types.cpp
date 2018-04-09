@@ -27,52 +27,52 @@
 namespace nodal
 {
 
-  template class generic_type<bool>;
+    template class generic_type<bool>;
 
-  template class generic_type<std::int8_t>;
-  template class generic_type<std::uint8_t>;
-  template class generic_type<std::int16_t>;
-  template class generic_type<std::uint16_t>;
-  template class generic_type<std::int32_t>;
-  template class generic_type<std::uint32_t>;
-  template class generic_type<std::int64_t>;
-  template class generic_type<std::uint64_t>;
+    template class generic_type<std::int8_t>;
+    template class generic_type<std::uint8_t>;
+    template class generic_type<std::int16_t>;
+    template class generic_type<std::uint16_t>;
+    template class generic_type<std::int32_t>;
+    template class generic_type<std::uint32_t>;
+    template class generic_type<std::int64_t>;
+    template class generic_type<std::uint64_t>;
 
-  template class generic_type<float>;
-  template class generic_type<double>;
+    template class generic_type<float>;
+    template class generic_type<double>;
 
-  template class generic_type<std::string>;
+    template class generic_type<std::string>;
 
-  template class generic_type<void*>;
+    template class generic_type<void*>;
 
-  // Singletons
+    // Singletons
 
-  namespace types
-  {
+    namespace types
+    {
 
-    none_type const none{};
+        none_type const none{};
 
-    bool_type const boolean{};
+        bool_type const boolean{};
 
-    byte_type const byte{};
-    int_type const integer{};
-    uint_type const unsigned_int{};
+        byte_type const byte{};
+        int_type const integer{};
+        uint_type const unsigned_int{};
 
-    int16_type const int16{};
-    uint16_type const uint16{};
-    int32_type const int32{};
-    uint32_type const uint32{};
-    int64_type const int64{};
-    uint64_type const uint64{};
+        int16_type const int16{};
+        uint16_type const uint16{};
+        int32_type const int32{};
+        uint32_type const uint32{};
+        int64_type const int64{};
+        uint64_type const uint64{};
 
-    float_type const real{};
-    float_type const& float_single = real;
-    double_type const float_double{};
+        float_type const real{};
+        float_type const& float_single = real;
+        double_type const float_double{};
 
-    string_type const string{};
+        string_type const string{};
 
-    pointer_type const pointer{};
+        pointer_type const pointer{};
 
-  } /* namespace types */
+    } /* namespace types */
 
 } /* namespace nodal */

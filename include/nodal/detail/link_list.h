@@ -24,11 +24,11 @@
 
 #pragma once
 
-#include <boost/multi_index_container.hpp>
 #include <boost/multi_index/hashed_index.hpp>
-#include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/identity.hpp>
 #include <boost/multi_index/member.hpp>
+#include <boost/multi_index/ordered_index.hpp>
+#include <boost/multi_index_container.hpp>
 
 namespace nodal
 {
@@ -36,32 +36,28 @@ namespace nodal
 namespace detail
 {
 
-  struct source_index {};
-  struct target_index {};
+    struct source_index {};
+    struct target_index {};
 
-  namespace link_list_detail
-  {
-    using namespace boost;
-    using namespace boost::multi_index;
+    namespace link_list_detail
+    {
+        using namespace boost;
+        using namespace boost::multi_index;
 
-    using link_list = multi_index_container<
-      graph_link,
-      indexed_by<
-        hashed_unique<identity<graph_link>, graph_link::hash>,
-        ordered_non_unique<
-          tag<source_index>,
-          member<graph_link, graph_node*, &graph_link::source_node>
-        >,
-        ordered_non_unique<
-          tag<target_index>,
-          member<graph_link, graph_node*, &graph_link::target_node>
-        >
-      >
-    >;
+        using link_list = multi_index_container<
+            graph_link,
+            indexed_by<
+                hashed_unique<identity<graph_link>, graph_link::hash>,
+                ordered_non_unique<
+                    tag<source_index>,
+                    member<graph_link, graph_node*, &graph_link::source_node>>,
+                ordered_non_unique<
+                    tag<target_index>,
+                    member<graph_link, graph_node*, &graph_link::target_node>>>>;
 
-  } /* namespace link_list_detail */
+    } /* namespace link_list_detail */
 
-  using link_list = link_list_detail::link_list;
+    using link_list = link_list_detail::link_list;
 
 } /* namespace detail */
 

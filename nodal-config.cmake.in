@@ -28,5 +28,5 @@ find_package(Boost REQUIRED)
 get_target_property(incdirs nodal INTERFACE_INCLUDE_DIRECTORIES)
 list(APPEND incdirs ${Boost_INCLUDE_DIRS})
 set_target_properties(nodal PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "${incdirs}"
+    INTERFACE_INCLUDE_DIRECTORIES "${incdirs}"
 )

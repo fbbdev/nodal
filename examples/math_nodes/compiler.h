@@ -31,10 +31,9 @@
 
 using graph_fn = std::function<double*(double*)>;
 
-class compiler_error : public std::runtime_error
-{
+class compiler_error : public std::runtime_error {
 public:
-  using std::runtime_error::runtime_error;
+    using std::runtime_error::runtime_error;
 };
 
 nodal::compiler create_compiler();

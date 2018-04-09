@@ -28,19 +28,21 @@
 
 #include <string>
 
-class input_node : public node
-{
+class input_node : public node {
 public:
-  struct data_t
-  {
-    // params
-    std::size_t index;
-  };
+    struct data_t {
+        // params
+        std::size_t index;
+    };
 
-  std::size_t output_count() const override { return 1; }
-  std::size_t param_count() const override { return 1; }
+    std::size_t output_count() const override {
+        return 1;
+    }
+    std::size_t param_count() const override {
+        return 1;
+    }
 
-  nodal::node_data* data() const override;
+    nodal::node_data* data() const override;
 
-  node_fn compile(nodal::node_data* data) const override;
+    node_fn compile(nodal::node_data* data) const override;
 };

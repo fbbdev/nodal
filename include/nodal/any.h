@@ -29,20 +29,29 @@
 namespace nodal
 {
 
-class any : public boost::any
-{
+class any : public boost::any {
 public:
-  using boost::any::any;
+    using boost::any::any;
 
-  template<typename T>
-  T& cast() { return boost::any_cast<T&>(*this); }
-  template<typename T>
-  T const& cast() const { return boost::any_cast<T const&>(*this); }
+    template <typename T>
+    T& cast() {
+        return boost::any_cast<T&>(*this);
+    }
 
-  template<typename T>
-  operator T&() { return cast<T>(); }
-  template<typename T>
-  operator T const&() const { return cast<T>(); }
+    template <typename T>
+    T const& cast() const {
+        return boost::any_cast<T const&>(*this);
+    }
+
+    template <typename T>
+    operator T&() {
+        return cast<T>();
+    }
+
+    template <typename T>
+    operator T const&() const {
+        return cast<T>();
+    }
 };
 
 } /* namespace nodal */

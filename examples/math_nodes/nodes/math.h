@@ -26,37 +26,40 @@
 
 #include "../node.h"
 
-class math_node : public node
-{
+class math_node : public node {
 public:
-  enum function
-  {
-    first,
-    second,
-    min,
-    max,
-    add,
-    sub,
-    mul,
-    div,
-    pow
-  };
+    enum function {
+        first,
+        second,
+        min,
+        max,
+        add,
+        sub,
+        mul,
+        div,
+        pow
+    };
 
-  struct data_t
-  {
-    // inputs
-    double first;
-    double second;
+    struct data_t {
+        // inputs
+        double first;
+        double second;
 
-    // params
-    function fn;
-  };
+        // params
+        function fn;
+    };
 
-  std::size_t input_count() const override { return 2; }
-  std::size_t output_count() const override { return 1; }
-  std::size_t param_count() const override { return 1; }
+    std::size_t input_count() const override {
+        return 2;
+    }
+    std::size_t output_count() const override {
+        return 1;
+    }
+    std::size_t param_count() const override {
+        return 1;
+    }
 
-  nodal::node_data* data() const override;
+    nodal::node_data* data() const override;
 
-  node_fn compile(nodal::node_data* data) const override;
+    node_fn compile(nodal::node_data* data) const override;
 };

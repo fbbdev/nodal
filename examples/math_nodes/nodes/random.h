@@ -26,10 +26,11 @@
 
 #include "../node.h"
 
-class random_node : public node
-{
+class random_node : public node {
 public:
-  std::size_t output_count() const override { return 1; }
+    std::size_t output_count() const override {
+        return 1;
+    }
 
-  node_fn compile(nodal::node_data* data) const override;
+    node_fn compile(nodal::node_data* data) const override;
 };

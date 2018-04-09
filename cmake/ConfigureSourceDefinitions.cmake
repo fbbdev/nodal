@@ -23,41 +23,41 @@
 include(CMakeParseArguments)
 
 function(configure_source_definitions template)
-  set(options)
-  set(oneValueArgs BASE_PATH)
-  set(multiValueArgs)
+    set(options)
+    set(oneValueArgs BASE_PATH)
+    set(multiValueArgs)
 
-  cmake_parse_arguments(ARG
-                        "${options}"
-                        "${oneValueArgs}"
-                        "${multiValueArgs}"
-                        ${ARGN})
+    cmake_parse_arguments(ARG
+                          "${options}"
+                          "${oneValueArgs}"
+                          "${multiValueArgs}"
+                          ${ARGN})
 
-  foreach(source IN LISTS ARG_UNPARSED_ARGUMENTS)
-    if(ARG_BASE_PATH)
-      get_filename_component(base_path "${ARG_BASE_PATH}" ABSOLUTE)
-      get_filename_component(parsed_source "${source}" ABSOLUTE)
-      file(RELATIVE_PATH parsed_source "${base_path}" "${parsed_source}")
-    else()
-      set(parsed_source "${source}")
-    endif()
+    foreach(source IN LISTS ARG_UNPARSED_ARGUMENTS)
+        if(ARG_BASE_PATH)
+            get_filename_component(base_path "${ARG_BASE_PATH}" ABSOLUTE)
+            get_filename_component(parsed_source "${source}" ABSOLUTE)
+            file(RELATIVE_PATH parsed_source "${base_path}" "${parsed_source}")
+        else()
+            set(parsed_source "${source}")
+        endif()
 
-    get_filename_component(ns "${parsed_source}" DIRECTORY)
-    get_filename_component(name "${parsed_source}" NAME_WE)
-    get_filename_component(ext "${parsed_source}" EXT)
+        get_filename_component(ns "${parsed_source}" DIRECTORY)
+        get_filename_component(name "${parsed_source}" NAME_WE)
+        get_filename_component(ext "${parsed_source}" EXT)
 
-    string(REPLACE "/" "_" ns "${ns}")
-    string(REGEX REPLACE "[^a-zA-Z0-9_]" "_" name "${name}")
-    string(REGEX REPLACE "[^a-zA-Z0-9_]" "_" ext "${ext}")
+        string(REPLACE "/" "_" ns "${ns}")
+        string(REGEX REPLACE "[^a-zA-Z0-9_]" "_" name "${name}")
+        string(REGEX REPLACE "[^a-zA-Z0-9_]" "_" ext "${ext}")
 
-    if(ns)
-      set(ns "${ns}_")
-    endif()
+        if(ns)
+            set(ns "${ns}_")
+        endif()
 
-    string(TOUPPER "${ns}${name}${ext}" id)
-    string(CONFIGURE "${template}" def @ONLY)
+        string(TOUPPER "${ns}${name}${ext}" id)
+        string(CONFIGURE "${template}" def @ONLY)
 
-    set_source_files_properties("${source}" PROPERTIES
-                                COMPILE_DEFINITIONS "${def}")
-  endforeach()
+        set_source_files_properties("${source}" PROPERTIES
+                                    COMPILE_DEFINITIONS "${def}")
+    endforeach()
 endfunction()

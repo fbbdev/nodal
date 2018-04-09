@@ -31,35 +31,32 @@
 namespace nodal
 {
 
-class dfs_visitor : public boost::default_dfs_visitor
-{
+class dfs_visitor : public boost::default_dfs_visitor {
 public:
-  void context(context& ctx) {}
+    void context(context& ctx) {}
 };
 
-template<typename Visitor>
-class depth_first_search_pass : public pass
-{
+template <typename Visitor>
+class depth_first_search_pass : public pass {
 public:
-  depth_first_search_pass(Visitor visitor = Visitor())
-    : visitor(std::move(visitor))
-    {}
+    depth_first_search_pass(Visitor visitor = Visitor())
+        : visitor(std::move(visitor))
+        {}
 
-  any run(graph& graph, context& ctx) const override;
+    any run(graph& graph, context& ctx) const override;
 
 private:
-  Visitor visitor;
+    Visitor visitor;
 };
 
-template<typename Visitor>
-any depth_first_search_pass<Visitor>::run(graph& graph, context& ctx) const
-{
-  Visitor v = visitor;
-  v.context(ctx);
+template <typename Visitor>
+any depth_first_search_pass<Visitor>::run(graph& graph, context& ctx) const {
+    Visitor v = visitor;
+    v.context(ctx);
 
-  boost::depth_first_search(graph, v, boost::get(boost::vertex_color, graph));
+    boost::depth_first_search(graph, v, boost::get(boost::vertex_color, graph));
 
-  return {};
+    return {};
 }
 
 } /* namespace nodal */

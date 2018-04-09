@@ -22,31 +22,32 @@
  * THE SOFTWARE.
  */
 
-#ifndef __NODAL_EXAMPLE_MATH_NODES_OUTPUT_NODE_H__
-#define __NODAL_EXAMPLE_MATH_NODES_OUTPUT_NODE_H__
+#pragma once
 
 #include "../node.h"
 
-class output_node : public node
-{
+class output_node : public node {
 public:
-  struct data_t
-  {
-    // inputs
-    double value;
+    struct data_t {
+        // inputs
+        double value;
 
-    // params
-    std::size_t index;
-  };
+        // params
+        std::size_t index;
+    };
 
-  std::size_t input_count() const override { return 1; }
-  std::size_t param_count() const override { return 1; }
+    std::size_t input_count() const override {
+        return 1;
+    }
+    std::size_t param_count() const override {
+        return 1;
+    }
 
-  nodal::node_data* data() const override;
+    nodal::node_data* data() const override;
 
-  node_fn compile(nodal::node_data* data) const override;
+    node_fn compile(nodal::node_data* data) const override;
 
-  bool keep() const override { return true; }
+    bool keep() const override {
+        return true;
+    }
 };
-
-#endif /* __NODAL_EXAMPLE_MATH_NODES_OUTPUT_NODE_H__ */

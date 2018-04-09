@@ -29,78 +29,63 @@
 
 using namespace nodal;
 
-node_data* math_node::data() const
-{
-  return struct_node_data<
-    data_t,
-    data_block<
-      data_field<data_t, double, &data_t::first>,
-      data_field<data_t, double, &data_t::second>
-    >,
-    data_block<
-      data_field<data_t, function, &data_t::fn>
-    >
-  >(data_t{ 0.0, 0.0, first });
+node_data* math_node::data() const {
+    return struct_node_data<
+        data_t,
+        data_block<
+            data_field<data_t, double, &data_t::first>,
+            data_field<data_t, double, &data_t::second>>,
+        data_block<data_field<data_t, function, &data_t::fn>>
+    >(data_t{ 0.0, 0.0, first });
 }
 
-node_fn math_node::compile(node_data* data) const
-{
-  switch (data->param<function>(0))
-  {
-    case first:
-      return [](double* inputs, context const&)
-      {
-        return new double[1]{ inputs[0] };
-      };
+node_fn math_node::compile(node_data* data) const {
+    switch (data->param<function>(0)) {
+        case first:
+            return [](double* inputs, context const&) {
+                return new double[1]{ inputs[0] };
+            };
 
-    case second:
-      return [](double* inputs, context const&)
-      {
-        return new double[1]{ inputs[1] };
-      };
+        case second:
+            return [](double* inputs, context const&) {
+                return new double[1]{ inputs[1] };
+            };
 
-    case min:
-      return [](double* inputs, context const&)
-      {
-        return new double[1]{ std::min(inputs[0], inputs[1]) };
-      };
+        case min:
+            return [](double* inputs, context const&) {
+                return new double[1]{ std::min(inputs[0], inputs[1]) };
+            };
 
-    case max:
-      return [](double* inputs, context const&)
-      {
-        return new double[1]{ std::max(inputs[0], inputs[1]) };
-      };
+        case max:
+            return [](double* inputs, context const&) {
+                return new double[1]{ std::max(inputs[0], inputs[1]) };
+            };
 
-    case add:
-      return [](double* inputs, context const&)
-      {
-        return new double[1]{ inputs[0] + inputs[1] };
-      };
+        case add:
+            return [](double* inputs, context const&) {
+                return new double[1]{ inputs[0] + inputs[1] };
+            };
 
-    case sub:
-      return [](double* inputs, context const&)
-      {
-        return new double[1]{ inputs[0] - inputs[1] };
-      };
+        case sub:
+            return [](double* inputs, context const&) {
+                return new double[1]{ inputs[0] - inputs[1] };
+            };
 
-    case mul:
-      return [](double* inputs, context const&)
-      {
-        return new double[1]{ inputs[0] * inputs[1] };
-      };
+        case mul:
+            return [](double* inputs, context const&) {
+                return new double[1]{ inputs[0] * inputs[1] };
+            };
 
-    case div:
-      return [](double* inputs, context const&)
-      {
-        return new double[1]{ inputs[0] / inputs[1] };
-      };
+        case div:
+            return [](double* inputs, context const&) {
+                return new double[1]{ inputs[0] / inputs[1] };
+            };
 
-    case pow:
-      return [](double* inputs, context const&)
-      {
-        return new double[1]{ std::pow(inputs[0], inputs[1]) };
-      };
-  }
+        case pow:
+            return [](double* inputs, context const&) {
+                return new double[1]{ std::pow(inputs[0], inputs[1]) };
+            };
+    }
 
-  return [](double*, context const&) -> double* { return nullptr; };
+    return [](double*, context const&) -> double* { return nullptr; };
 }

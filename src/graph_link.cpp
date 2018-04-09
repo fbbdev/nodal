@@ -28,22 +28,20 @@
 
 using namespace nodal;
 
-std::size_t graph_link::hash::operator()(graph_link const& link) const
-{
-  std::size_t hash = 0;
+std::size_t graph_link::hash::operator()(graph_link const& link) const {
+    std::size_t hash = 0;
 
-  boost::hash_combine(hash, link.source_node);
-  boost::hash_combine(hash, link.source_socket);
-  boost::hash_combine(hash, link.target_node);
-  boost::hash_combine(hash, link.target_socket);
+    boost::hash_combine(hash, link.source_node);
+    boost::hash_combine(hash, link.source_socket);
+    boost::hash_combine(hash, link.target_node);
+    boost::hash_combine(hash, link.target_socket);
 
-  return hash;
+    return hash;
 }
 
-bool graph_link::operator==(graph_link const& other) const
-{
-  return source_node == other.source_node &&
-         target_node == other.target_node &&
-         source_socket == other.source_socket &&
-         target_socket == other.target_socket;
+bool graph_link::operator==(graph_link const& other) const {
+    return source_node == other.source_node &&
+           target_node == other.target_node &&
+           source_socket == other.source_socket &&
+           target_socket == other.target_socket;
 }

@@ -27,59 +27,54 @@
 #include "any.h"
 #include "graph.h"
 
-#include <typeindex>
 #include <forward_list>
 #include <memory>
+#include <typeindex>
 #include <unordered_map>
 
 namespace nodal
 {
 
-class context
-{
+class context {
 public:
-  template<typename Pass>
-  typename Pass::result_type const& pass() const {
-    return pass_data.at(typeid(Pass));
-  }
+    template <typename Pass>
+    typename Pass::result_type const& pass() const {
+        return pass_data.at(typeid(Pass));
+    }
 
 private:
-  friend class compiler;
+    friend class compiler;
 
-  void set(std::type_index const& pass, any&& data);
-  any get(std::type_index const& pass) const;
+    void set(std::type_index const& pass, any&& data);
+    any get(std::type_index const& pass) const;
 
-  std::unordered_map<std::type_index, any> pass_data;
+    std::unordered_map<std::type_index, any> pass_data;
 };
 
-class pass
-{
+class pass {
 public:
-  virtual ~pass() {}
-  virtual any run(graph& graph, context& ctx) const = 0;
+    virtual ~pass() {}
+    virtual any run(graph& graph, context& ctx) const = 0;
 };
 
-class compiler : public std::forward_list<pass*>, public pass
-{
-  using base = std::forward_list<pass*>;
+class compiler : public std::forward_list<pass*>, public pass {
+    using base = std::forward_list<pass*>;
 
 public:
-  using base::forward_list;
+    using base::forward_list;
 
-  ~compiler();
+    ~compiler();
 
-  any run(graph& graph, context& ctx) const override;
+    any run(graph& graph, context& ctx) const override;
 
-  any compile(graph graph, context& ctx) const
-  {
-    return run(graph, ctx);
-  }
+    any compile(graph graph, context& ctx) const {
+        return run(graph, ctx);
+    }
 
-  any compile(graph graph) const
-  {
-    context ctx;
-    return compile(std::move(graph), ctx);
-  }
+    any compile(graph graph) const {
+        context ctx;
+        return compile(std::move(graph), ctx);
+    }
 };
 
 } /* namespace nodal */

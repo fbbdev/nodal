@@ -31,22 +31,20 @@
 
 using namespace nodal;
 
-node_fn random_node::compile(node_data* data) const
-{
-  std::srand((unsigned int) std::time(nullptr));
+node_fn random_node::compile(node_data* data) const {
+    std::srand((unsigned int) std::time(nullptr));
 
-  std::shared_ptr<std::ifstream> source(
-    new std::ifstream("/dev/random", std::ifstream::binary));
+    std::shared_ptr<std::ifstream> source(
+        new std::ifstream("/dev/random", std::ifstream::binary));
 
-  return [source](double*, context const&)
-  {
-    auto output = new double[1]{ 0 };
+    return [source](double*, context const&) {
+        auto output = new double[1]{ 0 };
 
-    if (*source)
-      source->read((char*) output, sizeof(double));
-    else
-      *output = (double) std::rand();
+        if (*source)
+            source->read((char*) output, sizeof(double));
+        else
+            *output = (double) std::rand();
 
-    return output;
-  };
+        return output;
+    };
 }

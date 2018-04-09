@@ -34,26 +34,23 @@ namespace nodal
 namespace detail
 {
 
-  using cd_callback =
-    std::function<void(graph_link const&, graph const&)>;
+    using cd_callback = std::function<void(graph_link const&, graph const&)>;
 
-  class cd_visitor : public dfs_visitor
-  {
-  public:
-    cd_visitor(cd_callback const& callback) : back_edge(callback) {}
+    class cd_visitor : public dfs_visitor {
+    public:
+        cd_visitor(cd_callback const& callback) : back_edge(callback) {}
 
-    cd_callback back_edge;
-  };
+        cd_callback back_edge;
+    };
 
 } /* namespace detail */
 
-class cycle_detection_pass :
-  public depth_first_search_pass<detail::cd_visitor>
-{
+class cycle_detection_pass
+    : public depth_first_search_pass<detail::cd_visitor> {
 public:
-  cycle_detection_pass(detail::cd_callback const& callback)
-    : depth_first_search_pass<detail::cd_visitor>(callback)
-    {}
+    cycle_detection_pass(detail::cd_callback const& callback)
+        : depth_first_search_pass<detail::cd_visitor>(callback)
+        {}
 };
 
 } /* namespace nodal */

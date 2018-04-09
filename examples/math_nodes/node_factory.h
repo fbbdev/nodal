@@ -28,29 +28,25 @@
 
 #include <nodal/graph_node.h>
 
-struct node_factory
-{
-  ~node_factory()
-  {
-    delete input_n;
-    delete output_n;
-    delete math_n;
-    delete random_n;
-  }
+struct node_factory {
+    ~node_factory() {
+        delete input_n;
+        delete output_n;
+        delete math_n;
+        delete random_n;
+    }
 
-  nodal::graph_node* input(std::string const& name,
-                           std::size_t index) const;
+    nodal::graph_node* input(std::string const& name, std::size_t index) const;
 
-  nodal::graph_node* output(std::string const& name,
-                            std::size_t index) const;
+    nodal::graph_node* output(std::string const& name, std::size_t index) const;
 
-  nodal::graph_node* math(std::string const& name,
-                          math_node::function fn) const;
+    nodal::graph_node* math(std::string const& name,
+                            math_node::function fn) const;
 
-  nodal::graph_node* random(std::string const& name) const;
+    nodal::graph_node* random(std::string const& name) const;
 
-  nodal::node* input_n = new input_node;
-  nodal::node* output_n = new output_node;
-  nodal::node* math_n = new math_node;
-  nodal::node* random_n = new random_node;
+    nodal::node* input_n = new input_node;
+    nodal::node* output_n = new output_node;
+    nodal::node* math_n = new math_node;
+    nodal::node* random_n = new random_node;
 };

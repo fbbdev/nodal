@@ -25,6 +25,6 @@
 #pragma once
 
 #include "input.h"
-#include "output.h"
 #include "math.h"
+#include "output.h"
 #include "random.h"

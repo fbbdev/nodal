@@ -31,28 +31,35 @@
 namespace nodal
 {
 
-class node
-{
+class node {
 public:
-  virtual ~node() {}
+    virtual ~node() {}
 
-  virtual std::size_t input_count() const { return 0; }
-  virtual std::size_t output_count() const { return 0; }
-  virtual std::size_t param_count() const { return 0; }
+    virtual std::size_t input_count() const {
+        return 0;
+    }
 
-  virtual node_data* data() const { return nullptr; }
+    virtual std::size_t output_count() const {
+        return 0;
+    }
 
-  template<typename T>
-  T* cast()
-  {
-    return static_cast<T*>(this);
-  }
+    virtual std::size_t param_count() const {
+        return 0;
+    }
 
-  template<typename T>
-  T const* cast() const
-  {
-    return static_cast<T const*>(this);
-  }
+    virtual node_data* data() const {
+        return nullptr;
+    }
+
+    template <typename T>
+    T* cast() {
+        return static_cast<T*>(this);
+    }
+
+    template <typename T>
+    T const* cast() const {
+        return static_cast<T const*>(this);
+    }
 };
 
 } /* namespace nodal */

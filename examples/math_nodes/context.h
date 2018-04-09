@@ -24,8 +24,7 @@
 
 #pragma once
 
-struct context
-{
-  double* inputs;
-  double* outputs;
+struct context {
+    double* inputs;
+    double* outputs;
 };

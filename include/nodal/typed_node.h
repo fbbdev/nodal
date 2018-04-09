@@ -30,12 +30,19 @@
 namespace nodal
 {
 
-class typed_node : public node
-{
+class typed_node : public node {
 public:
-  virtual type const* input_type(std::size_t index) const { return nullptr; }
-  virtual type const* output_type(std::size_t index) const { return nullptr; }
-  virtual type const* param_type(std::size_t index) const { return nullptr; }
+    virtual type const* input_type(std::size_t index) const {
+        return nullptr;
+    }
+
+    virtual type const* output_type(std::size_t index) const {
+        return nullptr;
+    }
+
+    virtual type const* param_type(std::size_t index) const {
+        return nullptr;
+    }
 };
 
 } /* namespace nodal */

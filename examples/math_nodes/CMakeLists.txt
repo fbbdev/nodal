@@ -24,42 +24,42 @@ cmake_minimum_required(VERSION 3.2)
 project(nodal-example-math-nodes CXX C)
 
 if(NOT BUILDING_NODAL)
-  list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../cmake")
+    list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../cmake")
 
-  include(EnableCXX14)
-  include(ConfigureSourceDefinitions)
-  include(GNUInstallDirs)
+    include(GNUInstallDirs)
+    include(EnableCXX14)
+    include(ConfigureSourceDefinitions)
 
-  find_package(nodal REQUIRED)
+    find_package(nodal REQUIRED)
 endif()
 
 set(SOURCES
-  node_factory.cpp
-  compiler.cpp
-  main.cpp
+    node_factory.cpp
+    compiler.cpp
+    main.cpp
 
-  nodes/input.cpp
-  nodes/output.cpp
-  nodes/math.cpp
-  nodes/random.cpp
+    nodes/input.cpp
+    nodes/output.cpp
+    nodes/math.cpp
+    nodes/random.cpp
 )
 
 set(HEADERS
-  node.h
-  node_factory.h
-  context.h
-  compiler.h
+    node.h
+    node_factory.h
+    context.h
+    compiler.h
 
-  nodes/all.h
-  nodes/input.h
-  nodes/output.h
-  nodes/math.h
-  nodes/random.h
+    nodes/all.h
+    nodes/input.h
+    nodes/output.h
+    nodes/math.h
+    nodes/random.h
 )
 
 configure_source_definitions(
-  "__NODAL_EXAMPLE_MATH_NODES_BUILDING_@id@__"
-  ${SOURCES})
+    "__NODAL_EXAMPLE_MATH_NODES_BUILDING_@id@__"
+    ${SOURCES})
 
 add_executable(nodal-example-math-nodes ${SOURCES} ${HEADERS})
 
@@ -67,7 +67,7 @@ enable_cxx14(nodal-example-math-nodes)
 target_link_libraries(nodal-example-math-nodes nodal)
 
 set_property(TARGET nodal-example-math-nodes
-  PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+             PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
 
 install(TARGETS nodal-example-math-nodes
         RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")

@@ -31,33 +31,30 @@
 namespace nodal
 {
 
-class graph_link
-{
+class graph_link {
 public:
-  struct hash
-  {
-    std::size_t operator()(graph_link const& link) const;
-  };
+    struct hash {
+        std::size_t operator()(graph_link const& link) const;
+    };
 
-  graph_link() = default;
+    graph_link() = default;
 
-  graph_link(graph_node* source_node, std::size_t source_socket,
-             graph_node* target_node, std::size_t target_socket)
-    : source_node(source_node), source_socket(source_socket),
-      target_node(target_node), target_socket(target_socket)
-    {}
+    graph_link(graph_node* source_node, std::size_t source_socket,
+               graph_node* target_node, std::size_t target_socket)
+        : source_node(source_node), source_socket(source_socket),
+          target_node(target_node), target_socket(target_socket)
+        {}
 
-  graph_node* source_node;
-  std::size_t source_socket;
+    graph_node* source_node;
+    std::size_t source_socket;
 
-  graph_node* target_node;
-  std::size_t target_socket;
+    graph_node* target_node;
+    std::size_t target_socket;
 
-  bool operator==(graph_link const& other) const;
-  bool operator!=(graph_link const& other) const
-  {
-    return !(*this == other);
-  }
+    bool operator==(graph_link const& other) const;
+    bool operator!=(graph_link const& other) const {
+        return !(*this == other);
+    }
 };
 
 } /* namespace nodal */
