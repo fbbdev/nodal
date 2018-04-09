@@ -24,23 +24,32 @@
 
 #pragma once
 
-#include "../compiler.h"
+#include "../compiler.hpp"
 
-#include <functional>
+#include <boost/graph/topological_sort.hpp>
+
+#include <iterator>
 
 namespace nodal
 {
 
-class dead_branch_removal_pass : public pass {
+template <typename Container>
+class topological_sort_pass : public pass {
 public:
-    dead_branch_removal_pass(std::function<bool(graph_node const*)> const& keep)
-        : keep(keep)
-        {}
+    using result_type = Container;
 
     any run(graph& graph, context& ctx) const override;
-
-private:
-    std::function<bool(graph_node const*)> keep;
 };
+
+template <typename Container>
+any topological_sort_pass<Container>::run(graph& graph, context& ctx) const {
+    Container c;
+
+    boost::topological_sort(
+        graph, std::front_inserter(c),
+        boost::color_map(boost::get(boost::vertex_color, graph)));
+
+    return std::move(c);
+}
 
 } /* namespace nodal */

@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "math.h"
+#include "math.hpp"
 
 #include <algorithm>
 #include <cmath>

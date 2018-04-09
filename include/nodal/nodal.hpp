@@ -24,35 +24,18 @@
 
 #pragma once
 
-#include "depth_first_search.h"
+#include "node.hpp"
 
-#include <functional>
+#include "type.hpp"
 
-namespace nodal
-{
+#include "types.hpp"
+#include "typed_node.hpp"
 
-namespace detail
-{
+#include "graph.hpp"
 
-    using cd_callback = std::function<void(graph_link const&, graph const&)>;
+#include "compiler.hpp"
 
-    class cd_visitor : public dfs_visitor {
-    public:
-        cd_visitor(cd_callback const& callback) : back_edge(callback) {}
-
-        cd_callback back_edge;
-    };
-
-} /* namespace detail */
-
-class cycle_detection_pass
-    : public depth_first_search_pass<detail::cd_visitor> {
-public:
-    using callback_type = std::function<void(graph_link const&, graph const&)>;
-
-    cycle_detection_pass(callback_type const& callback)
-        : depth_first_search_pass<detail::cd_visitor>(callback)
-        {}
-};
-
-} /* namespace nodal */
+#include "passes/cycle_detection.hpp"
+#include "passes/dead_branch_removal.hpp"
+#include "passes/depth_first_search.hpp"
+#include "passes/topological_sort.hpp"

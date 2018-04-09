@@ -24,25 +24,35 @@
 
 #pragma once
 
-#include "node.h"
-#include "type.h"
+#include "depth_first_search.hpp"
+
+#include <functional>
 
 namespace nodal
 {
 
-class typed_node : public node {
+namespace detail
+{
+
+    using cd_callback = std::function<void(graph_link const&, graph const&)>;
+
+    class cd_visitor : public dfs_visitor {
+    public:
+        cd_visitor(cd_callback const& callback) : back_edge(callback) {}
+
+        cd_callback back_edge;
+    };
+
+} /* namespace detail */
+
+class cycle_detection_pass
+    : public depth_first_search_pass<detail::cd_visitor> {
 public:
-    virtual type const* input_type(std::size_t index) const {
-        return nullptr;
-    }
+    using callback_type = std::function<void(graph_link const&, graph const&)>;
 
-    virtual type const* output_type(std::size_t index) const {
-        return nullptr;
-    }
-
-    virtual type const* param_type(std::size_t index) const {
-        return nullptr;
-    }
+    cycle_detection_pass(callback_type const& callback)
+        : depth_first_search_pass<detail::cd_visitor>(callback)
+        {}
 };
 
 } /* namespace nodal */

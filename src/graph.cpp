@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "graph.h"
+#include "graph.hpp"
 
 #include <algorithm>
 #include <stdexcept>

@@ -24,18 +24,39 @@
 
 #pragma once
 
-#include "node.h"
+#include "graph_node.hpp"
 
-#include "type.h"
+#include <cstddef>
 
-#include "types.h"
-#include "typed_node.h"
+namespace nodal
+{
 
-#include "graph.h"
+class graph_link {
+public:
+    struct hash {
+        std::size_t operator()(graph_link const& link) const;
+    };
 
-#include "compiler.h"
+    graph_link() = default;
 
-#include "passes/cycle_detection.h"
-#include "passes/dead_branch_removal.h"
-#include "passes/depth_first_search.h"
-#include "passes/topological_sort.h"
+    graph_link(graph_node* source_node, std::size_t source_socket,
+               graph_node* target_node, std::size_t target_socket)
+        : source_node(source_node), source_socket(source_socket),
+          target_node(target_node), target_socket(target_socket)
+        {}
+
+    graph_node* source_node;
+    std::size_t source_socket;
+
+    graph_node* target_node;
+    std::size_t target_socket;
+
+    bool operator==(graph_link const& other) const;
+    bool operator!=(graph_link const& other) const {
+        return !(*this == other);
+    }
+};
+
+} /* namespace nodal */
+
+#include "detail/link_list.hpp"

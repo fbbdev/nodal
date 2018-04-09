@@ -22,10 +22,10 @@
  * THE SOFTWARE.
  */
 
-#include "compiler.h"
-#include "node_factory.h"
+#include "compiler.hpp"
+#include "node_factory.hpp"
 
-#include <nodal/graph.h>
+#include <nodal/graph.hpp>
 
 #include <iostream>
 

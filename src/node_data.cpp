@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "node_data.h"
+#include "node_data.hpp"
 
 using namespace nodal;
 

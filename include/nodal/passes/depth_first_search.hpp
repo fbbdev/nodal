@@ -24,42 +24,39 @@
 
 #pragma once
 
-#include "../node.h"
+#include "../compiler.hpp"
 
-class math_node : public node {
+#include <boost/graph/depth_first_search.hpp>
+
+namespace nodal
+{
+
+class dfs_visitor : public boost::default_dfs_visitor {
 public:
-    enum function {
-        first,
-        second,
-        min,
-        max,
-        add,
-        sub,
-        mul,
-        div,
-        pow
-    };
-
-    struct data_t {
-        // inputs
-        double first;
-        double second;
-
-        // params
-        function fn;
-    };
-
-    std::size_t input_count() const override {
-        return 2;
-    }
-    std::size_t output_count() const override {
-        return 1;
-    }
-    std::size_t param_count() const override {
-        return 1;
-    }
-
-    nodal::node_data* data() const override;
-
-    node_fn compile(nodal::node_data* data) const override;
+    void context(context& ctx) {}
 };
+
+template <typename Visitor>
+class depth_first_search_pass : public pass {
+public:
+    depth_first_search_pass(Visitor visitor = Visitor())
+        : visitor(std::move(visitor))
+        {}
+
+    any run(graph& graph, context& ctx) const override;
+
+private:
+    Visitor visitor;
+};
+
+template <typename Visitor>
+any depth_first_search_pass<Visitor>::run(graph& graph, context& ctx) const {
+    Visitor v = visitor;
+    v.context(ctx);
+
+    boost::depth_first_search(graph, v, boost::get(boost::vertex_color, graph));
+
+    return {};
+}
+
+} /* namespace nodal */

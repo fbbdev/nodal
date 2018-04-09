@@ -24,8 +24,8 @@
 
 #pragma once
 
-#include "graph_link.h"
-#include "graph_node.h"
+#include "graph_link.hpp"
+#include "graph_node.hpp"
 
 #include <set>
 
@@ -260,5 +260,5 @@ private:
 
 } /* namespace nodal */
 
-#include "detail/graph_access.h"
-#include "detail/graph_properties.h"
+#include "detail/graph_access.hpp"
+#include "detail/graph_properties.hpp"

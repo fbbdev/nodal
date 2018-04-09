@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "output.h"
+#include "output.hpp"
 
 using namespace nodal;
 

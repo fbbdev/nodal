@@ -1,4 +1,4 @@
-/** -*- C++ -*-
+/**
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -24,21 +24,30 @@
 
 #pragma once
 
-#include "context.h"
+#include "../node.hpp"
 
-#include <nodal/node.h>
-
-#include <functional>
-#include <memory>
-#include <unordered_map>
-
-using node_fn = std::function<double*(double*, context const&)>;
-
-class node : public nodal::node {
+class output_node : public node {
 public:
-    virtual node_fn compile(nodal::node_data* data) const = 0;
+    struct data_t {
+        // inputs
+        double value;
 
-    virtual bool keep() const {
-        return false;
+        // params
+        std::size_t index;
+    };
+
+    std::size_t input_count() const override {
+        return 1;
+    }
+    std::size_t param_count() const override {
+        return 1;
+    }
+
+    nodal::node_data* data() const override;
+
+    node_fn compile(nodal::node_data* data) const override;
+
+    bool keep() const override {
+        return true;
     }
 };

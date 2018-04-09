@@ -56,28 +56,28 @@ set(SOURCES
 )
 
 set(HEADERS
-    include/nodal/any.h
-    include/nodal/attribute.h
-    include/nodal/compiler.h
-    include/nodal/graph.h
-    include/nodal/graph_link.h
-    include/nodal/graph_node.h
-    include/nodal/nodal.h
-    include/nodal/node.h
-    include/nodal/node_data.h
-    include/nodal/type.h
-    include/nodal/typed_node.h
-    include/nodal/types.h
+    include/nodal/any.hpp
+    include/nodal/attribute.hpp
+    include/nodal/compiler.hpp
+    include/nodal/graph.hpp
+    include/nodal/graph_link.hpp
+    include/nodal/graph_node.hpp
+    include/nodal/nodal.hpp
+    include/nodal/node.hpp
+    include/nodal/node_data.hpp
+    include/nodal/type.hpp
+    include/nodal/typed_node.hpp
+    include/nodal/types.hpp
 
-    include/nodal/passes/cycle_detection.h
-    include/nodal/passes/dead_branch_removal.h
-    include/nodal/passes/depth_first_search.h
-    include/nodal/passes/topological_sort.h
+    include/nodal/passes/cycle_detection.hpp
+    include/nodal/passes/dead_branch_removal.hpp
+    include/nodal/passes/depth_first_search.hpp
+    include/nodal/passes/topological_sort.hpp
 
-    include/nodal/detail/generic_type.h
-    include/nodal/detail/graph_access.h
-    include/nodal/detail/graph_properties.h
-    include/nodal/detail/link_list.h
+    include/nodal/detail/generic_type.hpp
+    include/nodal/detail/graph_access.hpp
+    include/nodal/detail/graph_properties.hpp
+    include/nodal/detail/link_list.hpp
 )
 
 if(BUILD_SHARED_LIBS AND MSVC)

@@ -24,39 +24,53 @@
 
 #pragma once
 
-#include "graph_node.h"
-
-#include <cstddef>
+#include "attribute.hpp"
+#include "node.hpp"
+#include "node_data.hpp"
 
 namespace nodal
 {
 
-class graph_link {
+class graph_node {
 public:
-    struct hash {
-        std::size_t operator()(graph_link const& link) const;
-    };
+    graph_node(class node const* node);
 
-    graph_link() = default;
+    graph_node(graph_node const& other);
+    graph_node(graph_node&& other);
 
-    graph_link(graph_node* source_node, std::size_t source_socket,
-               graph_node* target_node, std::size_t target_socket)
-        : source_node(source_node), source_socket(source_socket),
-          target_node(target_node), target_socket(target_socket)
-        {}
+    ~graph_node();
 
-    graph_node* source_node;
-    std::size_t source_socket;
+    graph_node& operator=(graph_node const& other);
+    graph_node& operator=(graph_node&& other);
 
-    graph_node* target_node;
-    std::size_t target_socket;
-
-    bool operator==(graph_link const& other) const;
-    bool operator!=(graph_link const& other) const {
-        return !(*this == other);
+    class node const* node() const {
+        return node_;
     }
+
+    node_data* data() {
+        return data_;
+    }
+
+    node_data const* data() const {
+        return data_;
+    }
+
+    attribute_value& attribute(attribute_key const& key) {
+        return attributes[key];
+    }
+
+    attribute_value const& attribute(attribute_key const& key) const {
+        return attributes.at(key);
+    }
+
+    bool has_attribute(attribute_key const& key) const {
+        return attributes.count(key);
+    }
+
+private:
+    class node const* node_;
+    node_data* data_;
+    attribute_map attributes;
 };
 
 } /* namespace nodal */
-
-#include "detail/link_list.h"

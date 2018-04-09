@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "passes/dead_branch_removal.h"
+#include "passes/dead_branch_removal.hpp"
 
 #include <boost/graph/depth_first_search.hpp>
 

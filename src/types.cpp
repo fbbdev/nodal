@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "types.h"
+#include "types.hpp"
 
 namespace nodal
 {

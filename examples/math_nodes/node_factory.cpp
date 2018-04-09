@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "node_factory.h"
+#include "node_factory.hpp"
 
 nodal::graph_node* node_factory::input(std::string const& name,
                                        std::size_t index) const {

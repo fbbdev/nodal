@@ -24,29 +24,57 @@
 
 #pragma once
 
-#include "nodes/all.h"
+#include "any.hpp"
+#include "graph.hpp"
 
-#include <nodal/graph_node.h>
+#include <forward_list>
+#include <memory>
+#include <typeindex>
+#include <unordered_map>
 
-struct node_factory {
-    ~node_factory() {
-        delete input_n;
-        delete output_n;
-        delete math_n;
-        delete random_n;
+namespace nodal
+{
+
+class context {
+public:
+    template <typename Pass>
+    typename Pass::result_type const& pass() const {
+        return pass_data.at(typeid(Pass));
     }
 
-    nodal::graph_node* input(std::string const& name, std::size_t index) const;
+private:
+    friend class compiler;
 
-    nodal::graph_node* output(std::string const& name, std::size_t index) const;
+    void set(std::type_index const& pass, any&& data);
+    any get(std::type_index const& pass) const;
 
-    nodal::graph_node* math(std::string const& name,
-                            math_node::function fn) const;
-
-    nodal::graph_node* random(std::string const& name) const;
-
-    nodal::node* input_n = new input_node;
-    nodal::node* output_n = new output_node;
-    nodal::node* math_n = new math_node;
-    nodal::node* random_n = new random_node;
+    std::unordered_map<std::type_index, any> pass_data;
 };
+
+class pass {
+public:
+    virtual ~pass() {}
+    virtual any run(graph& graph, context& ctx) const = 0;
+};
+
+class compiler : public std::forward_list<pass*>, public pass {
+    using base = std::forward_list<pass*>;
+
+public:
+    using base::forward_list;
+
+    ~compiler();
+
+    any run(graph& graph, context& ctx) const override;
+
+    any compile(graph graph, context& ctx) const {
+        return run(graph, ctx);
+    }
+
+    any compile(graph graph) const {
+        context ctx;
+        return compile(std::move(graph), ctx);
+    }
+};
+
+} /* namespace nodal */

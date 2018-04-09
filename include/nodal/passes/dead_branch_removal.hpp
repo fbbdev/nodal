@@ -24,39 +24,23 @@
 
 #pragma once
 
-#include "../compiler.h"
+#include "../compiler.hpp"
 
-#include <boost/graph/depth_first_search.hpp>
+#include <functional>
 
 namespace nodal
 {
 
-class dfs_visitor : public boost::default_dfs_visitor {
+class dead_branch_removal_pass : public pass {
 public:
-    void context(context& ctx) {}
-};
-
-template <typename Visitor>
-class depth_first_search_pass : public pass {
-public:
-    depth_first_search_pass(Visitor visitor = Visitor())
-        : visitor(std::move(visitor))
+    dead_branch_removal_pass(std::function<bool(graph_node const*)> const& keep)
+        : keep(keep)
         {}
 
     any run(graph& graph, context& ctx) const override;
 
 private:
-    Visitor visitor;
+    std::function<bool(graph_node const*)> keep;
 };
-
-template <typename Visitor>
-any depth_first_search_pass<Visitor>::run(graph& graph, context& ctx) const {
-    Visitor v = visitor;
-    v.context(ctx);
-
-    boost::depth_first_search(graph, v, boost::get(boost::vertex_color, graph));
-
-    return {};
-}
 
 } /* namespace nodal */

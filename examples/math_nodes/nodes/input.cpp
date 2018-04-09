@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "input.h"
+#include "input.hpp"
 
 #include <iostream>
 

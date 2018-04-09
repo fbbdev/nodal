@@ -24,32 +24,25 @@
 
 #pragma once
 
-#include "../compiler.h"
+#include "../node.hpp"
 
-#include <boost/graph/topological_sort.hpp>
+#include <string>
 
-#include <iterator>
-
-namespace nodal
-{
-
-template <typename Container>
-class topological_sort_pass : public pass {
+class input_node : public node {
 public:
-    using result_type = Container;
+    struct data_t {
+        // params
+        std::size_t index;
+    };
 
-    any run(graph& graph, context& ctx) const override;
+    std::size_t output_count() const override {
+        return 1;
+    }
+    std::size_t param_count() const override {
+        return 1;
+    }
+
+    nodal::node_data* data() const override;
+
+    node_fn compile(nodal::node_data* data) const override;
 };
-
-template <typename Container>
-any topological_sort_pass<Container>::run(graph& graph, context& ctx) const {
-    Container c;
-
-    boost::topological_sort(
-        graph, std::front_inserter(c),
-        boost::color_map(boost::get(boost::vertex_color, graph)));
-
-    return std::move(c);
-}
-
-} /* namespace nodal */

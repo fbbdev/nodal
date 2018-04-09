@@ -22,13 +22,13 @@
  * THE SOFTWARE.
  */
 
-#include "compiler.h"
-#include "node.h"
-#include "nodes/output.h"
+#include "compiler.hpp"
+#include "node.hpp"
+#include "nodes/output.hpp"
 
-#include <nodal/passes/cycle_detection.h>
-#include <nodal/passes/dead_branch_removal.h>
-#include <nodal/passes/topological_sort.h>
+#include <nodal/passes/cycle_detection.hpp>
+#include <nodal/passes/dead_branch_removal.hpp>
+#include <nodal/passes/topological_sort.hpp>
 
 #include <boost/graph/graph_utility.hpp>
 

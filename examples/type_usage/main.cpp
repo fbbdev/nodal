@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include <nodal/nodal.h>
+#include <nodal/nodal.hpp>
 
 #include <iostream>
 #include <set>

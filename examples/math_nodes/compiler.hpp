@@ -24,19 +24,16 @@
 
 #pragma once
 
-#include "any.h"
+#include <nodal/compiler.hpp>
 
-#include <map>
-#include <string>
+#include <functional>
+#include <stdexcept>
 
-namespace nodal
-{
+using graph_fn = std::function<double*(double*)>;
 
-using attribute_key = std::string;
-using attribute_value = any;
+class compiler_error : public std::runtime_error {
+public:
+    using std::runtime_error::runtime_error;
+};
 
-using attribute_map = std::map<attribute_key, attribute_value>;
-
-using attribute = attribute_map::value_type;
-
-} /* namespace nodal */
+nodal::compiler create_compiler();

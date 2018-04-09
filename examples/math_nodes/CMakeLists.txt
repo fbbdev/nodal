@@ -53,16 +53,16 @@ set(SOURCES
 )
 
 set(HEADERS
-    node.h
-    node_factory.h
-    context.h
-    compiler.h
+    node.hpp
+    node_factory.hpp
+    context.hpp
+    compiler.hpp
 
-    nodes/all.h
-    nodes/input.h
-    nodes/output.h
-    nodes/math.h
-    nodes/random.h
+    nodes/all.hpp
+    nodes/input.hpp
+    nodes/output.hpp
+    nodes/math.hpp
+    nodes/random.hpp
 )
 
 configure_source_definitions(

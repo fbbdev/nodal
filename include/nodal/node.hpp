@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "node_data.h"
+#include "node_data.hpp"
 
 #include <cstddef>
 

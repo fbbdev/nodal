@@ -24,25 +24,25 @@
 
 #pragma once
 
-#include "../node.h"
+#include "node.hpp"
+#include "type.hpp"
 
-#include <string>
+namespace nodal
+{
 
-class input_node : public node {
+class typed_node : public node {
 public:
-    struct data_t {
-        // params
-        std::size_t index;
-    };
-
-    std::size_t output_count() const override {
-        return 1;
-    }
-    std::size_t param_count() const override {
-        return 1;
+    virtual type const* input_type(std::size_t index) const {
+        return nullptr;
     }
 
-    nodal::node_data* data() const override;
+    virtual type const* output_type(std::size_t index) const {
+        return nullptr;
+    }
 
-    node_fn compile(nodal::node_data* data) const override;
+    virtual type const* param_type(std::size_t index) const {
+        return nullptr;
+    }
 };
+
+} /* namespace nodal */

@@ -24,57 +24,21 @@
 
 #pragma once
 
-#include "any.h"
-#include "graph.h"
+#include "context.hpp"
 
-#include <forward_list>
+#include <nodal/node.hpp>
+
+#include <functional>
 #include <memory>
-#include <typeindex>
 #include <unordered_map>
 
-namespace nodal
-{
+using node_fn = std::function<double*(double*, context const&)>;
 
-class context {
+class node : public nodal::node {
 public:
-    template <typename Pass>
-    typename Pass::result_type const& pass() const {
-        return pass_data.at(typeid(Pass));
-    }
+    virtual node_fn compile(nodal::node_data* data) const = 0;
 
-private:
-    friend class compiler;
-
-    void set(std::type_index const& pass, any&& data);
-    any get(std::type_index const& pass) const;
-
-    std::unordered_map<std::type_index, any> pass_data;
-};
-
-class pass {
-public:
-    virtual ~pass() {}
-    virtual any run(graph& graph, context& ctx) const = 0;
-};
-
-class compiler : public std::forward_list<pass*>, public pass {
-    using base = std::forward_list<pass*>;
-
-public:
-    using base::forward_list;
-
-    ~compiler();
-
-    any run(graph& graph, context& ctx) const override;
-
-    any compile(graph graph, context& ctx) const {
-        return run(graph, ctx);
-    }
-
-    any compile(graph graph) const {
-        context ctx;
-        return compile(std::move(graph), ctx);
+    virtual bool keep() const {
+        return false;
     }
 };
-
-} /* namespace nodal */

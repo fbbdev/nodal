@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "graph_node.h"
+#include "graph_node.hpp"
 
 using namespace nodal;
 

@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "graph_link.h"
+#include "graph_link.hpp"
 
 #include <boost/functional/hash.hpp>
 

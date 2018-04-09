@@ -24,7 +24,7 @@
 
 #pragma once
 
-#include "../node.h"
+#include "../node.hpp"
 
 class random_node : public node {
 public:

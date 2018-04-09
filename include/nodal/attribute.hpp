@@ -24,7 +24,19 @@
 
 #pragma once
 
-#include "input.h"
-#include "math.h"
-#include "output.h"
-#include "random.h"
+#include "any.hpp"
+
+#include <map>
+#include <string>
+
+namespace nodal
+{
+
+using attribute_key = std::string;
+using attribute_value = any;
+
+using attribute_map = std::map<attribute_key, attribute_value>;
+
+using attribute = attribute_map::value_type;
+
+} /* namespace nodal */

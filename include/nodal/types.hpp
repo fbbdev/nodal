@@ -24,10 +24,10 @@
 
 #pragma once
 
-#include "node_data.h"
-#include "type.h"
+#include "node_data.hpp"
+#include "type.hpp"
 
-#include "detail/generic_type.h"
+#include "detail/generic_type.hpp"
 
 #include <type_traits>
 

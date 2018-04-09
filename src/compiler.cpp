@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "compiler.h"
+#include "compiler.hpp"
 
 using namespace nodal;
 

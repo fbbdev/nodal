@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#include "random.h"
+#include "random.hpp"
 
 #include <cstdlib>
 #include <ctime>

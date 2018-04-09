@@ -24,16 +24,29 @@
 
 #pragma once
 
-#include <nodal/compiler.h>
+#include "nodes/all.hpp"
 
-#include <functional>
-#include <stdexcept>
+#include <nodal/graph_node.hpp>
 
-using graph_fn = std::function<double*(double*)>;
+struct node_factory {
+    ~node_factory() {
+        delete input_n;
+        delete output_n;
+        delete math_n;
+        delete random_n;
+    }
 
-class compiler_error : public std::runtime_error {
-public:
-    using std::runtime_error::runtime_error;
+    nodal::graph_node* input(std::string const& name, std::size_t index) const;
+
+    nodal::graph_node* output(std::string const& name, std::size_t index) const;
+
+    nodal::graph_node* math(std::string const& name,
+                            math_node::function fn) const;
+
+    nodal::graph_node* random(std::string const& name) const;
+
+    nodal::node* input_n = new input_node;
+    nodal::node* output_n = new output_node;
+    nodal::node* math_n = new math_node;
+    nodal::node* random_n = new random_node;
 };
-
-nodal::compiler create_compiler();
