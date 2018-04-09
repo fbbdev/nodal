@@ -113,21 +113,21 @@ int main() {
 
     generic_type<float[3]> vector_type;
 
-    vector_type->from_int_vector({ 11, 12, 13 }, data, 1);
+    vector_type.from_int_vector({ 11, 12, 13 }, data, 1);
     std::cout << vector_type.as_real_vector(data, 1) << std::endl;
 
-    vector_type->from_real_vector({ 11.45, 1.5e+20, 13 }, data, 1);
+    vector_type.from_real_vector({ 11.45, 1.5e+20, 13 }, data, 1);
     std::cout << vector_type.as_uint_vector(data, 1) << "\n"
               << vector_type.as_string_vector(data, 1) << std::endl;
 
     generic_type<std::set<Data*>> ptr_set_type;
 
     Data d1, d2, d3;
-    ptr_set_type->from_object_vector<Data>({ &d1, &d2, &d3 }, data, 0, true);
+    ptr_set_type.from_object_vector<Data>({ &d1, &d2, &d3 }, data, 0, true);
 
     generic_type<std::vector<std::string>> string_list_type;
 
-    string_list_type->from_bool_vector({ true, false, false, true }, data, 1, true);
+    string_list_type.from_bool_vector({ true, false, false, true }, data, 1, true);
     std::cout << string_list_type.as_bool_vector(data, 1, true) << std::endl;
 
     std::cout << data->data<Data>() << std::endl;

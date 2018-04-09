@@ -383,28 +383,28 @@ namespace types
 
     // Singletons
 
-    extern none_type const none;
+    extern none_type const* const none;
 
-    extern bool_type const boolean;
+    extern bool_type const* const boolean;
 
-    extern byte_type const byte;
-    extern int_type const integer;
-    extern uint_type const unsigned_int;
+    extern byte_type const* const byte;
+    extern int_type const* const integer;
+    extern uint_type const* const unsigned_int;
 
-    extern int16_type const int16;
-    extern uint16_type const uint16;
-    extern int32_type const int32;
-    extern uint32_type const uint32;
-    extern int64_type const int64;
-    extern uint64_type const uint64;
+    extern int16_type const* const int16;
+    extern uint16_type const* const uint16;
+    extern int32_type const* const int32;
+    extern uint32_type const* const uint32;
+    extern int64_type const* const int64;
+    extern uint64_type const* const uint64;
 
-    extern float_type const real;
-    extern float_type const& float_single;
-    extern double_type const float_double;
+    extern float_type const* const real;
+    extern float_type const* const float_single;
+    extern double_type const* const float_double;
 
-    extern string_type const string;
+    extern string_type const* const string;
 
-    extern pointer_type const pointer;
+    extern pointer_type const* const pointer;
 
 }  // namespace types
 

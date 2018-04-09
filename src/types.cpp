@@ -45,34 +45,61 @@ namespace nodal
 
     template class generic_type<void*>;
 
-    // Singletons
-
-    namespace types
-    {
-
-        none_type const none{};
-
-        bool_type const boolean{};
-
-        byte_type const byte{};
-        int_type const integer{};
-        uint_type const unsigned_int{};
-
-        int16_type const int16{};
-        uint16_type const uint16{};
-        int32_type const int32{};
-        uint32_type const uint32{};
-        int64_type const int64{};
-        uint64_type const uint64{};
-
-        float_type const real{};
-        float_type const& float_single = real;
-        double_type const float_double{};
-
-        string_type const string{};
-
-        pointer_type const pointer{};
-
-    } /* namespace types */
-
 } /* namespace nodal */
+
+// Singletons
+
+namespace
+{
+
+    nodal::types::none_type const none_tp{};
+
+    nodal::types::bool_type const boolean_tp{};
+
+    nodal::types::byte_type const byte_tp{};
+    nodal::types::int_type const integer_tp{};
+    nodal::types::uint_type const unsigned_int_tp{};
+
+    nodal::types::int16_type const int16_tp{};
+    nodal::types::uint16_type const uint16_tp{};
+    nodal::types::int32_type const int32_tp{};
+    nodal::types::uint32_type const uint32_tp{};
+    nodal::types::int64_type const int64_tp{};
+    nodal::types::uint64_type const uint64_tp{};
+
+    nodal::types::float_type const float_single_tp{};
+    nodal::types::double_type const float_double_tp{};
+
+    nodal::types::string_type const string_tp{};
+
+    nodal::types::pointer_type const pointer_tp{};
+
+}  // namespace
+
+namespace nodal { namespace types
+{
+
+    none_type const* const none = &none_tp;
+
+    bool_type const* const boolean = &boolean_tp;
+
+    byte_type const* const byte = &byte_tp;
+    int_type const* const integer = &integer_tp;
+    uint_type const* const unsigned_int = &unsigned_int_tp;
+
+    int16_type const* const int16 = &int16_tp;
+    uint16_type const* const uint16 = &uint16_tp;
+    int32_type const* const int32 = &int32_tp;
+    uint32_type const* const uint32 = &uint32_tp;
+    int64_type const* const int64 = &int64_tp;
+    uint64_type const* const uint64 = &uint64_tp;
+
+    float_type const* const real = &float_single_tp;
+    float_type const* const float_single = &float_single_tp;
+    double_type const* const float_double = &float_double_tp;
+
+    string_type const* const string = &string_tp;
+
+    pointer_type const* const pointer = &pointer_tp;
+
+} /* namespace types */ } /* namespace nodal */
