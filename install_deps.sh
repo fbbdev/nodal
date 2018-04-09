@@ -11,7 +11,7 @@ if [ ! -d "$HOME/deps/cmake/bin" ]; then
 fi
 
 if [ ! -d "$HOME/deps/boost/include/boost" ]; then
-    wget -O boost.tar.bz2 "https://sourceforge.net/projects/boost/files/boost/1.55.0/boost_1_55_0.tar.bz2/download"
+    wget -O boost.tar.bz2 "https://sourceforge.net/projects/boost/files/boost/1.56.0/boost_1_56_0.tar.bz2/download"
     tar -xf boost.tar.bz2
     mkdir -p "$HOME/deps/boost/include"
     mv boost_*/boost "$HOME/deps/boost/include"
