@@ -27,7 +27,6 @@ if(NOT BUILDING_NODAL)
     list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../cmake")
 
     include(GNUInstallDirs)
-    include(EnableCXX14)
     include(ConfigureSourceDefinitions)
 
     find_package(nodal REQUIRED)
@@ -44,13 +43,10 @@ configure_source_definitions(
     "__NODAL_EXAMPLE_TYPE_USAGE_BUILDING_@id@__"
     ${SOURCES})
 
-add_executable(nodal-example-type-usage ${SOURCES} ${HEADERS})
+add_executable(type-usage ${SOURCES} ${HEADERS})
 
-enable_cxx14(nodal-example-type-usage)
-target_link_libraries(nodal-example-type-usage nodal)
+target_compile_features(type-usage PUBLIC cxx_std_14)
+target_link_libraries(type-usage nodal)
 
-set_property(TARGET nodal-example-type-usage
+set_property(TARGET type-usage
              PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
-
-install(TARGETS nodal-example-type-usage
-        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")

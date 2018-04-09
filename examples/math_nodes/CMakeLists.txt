@@ -27,7 +27,6 @@ if(NOT BUILDING_NODAL)
     list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../cmake")
 
     include(GNUInstallDirs)
-    include(EnableCXX14)
     include(ConfigureSourceDefinitions)
 
     find_package(nodal REQUIRED)
@@ -61,13 +60,10 @@ configure_source_definitions(
     "__NODAL_EXAMPLE_MATH_NODES_BUILDING_@id@__"
     ${SOURCES})
 
-add_executable(nodal-example-math-nodes ${SOURCES} ${HEADERS})
+add_executable(math-nodes ${SOURCES} ${HEADERS})
 
-enable_cxx14(nodal-example-math-nodes)
-target_link_libraries(nodal-example-math-nodes nodal)
+target_compile_features(math-nodes PUBLIC cxx_std_14)
+target_link_libraries(math-nodes nodal)
 
-set_property(TARGET nodal-example-math-nodes
+set_property(TARGET math-nodes
              PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
-
-install(TARGETS nodal-example-math-nodes
-        RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")

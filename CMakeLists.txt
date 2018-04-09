@@ -27,7 +27,6 @@ list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
-include(EnableCXX14)
 include(ConfigureSourceDefinitions)
 
 find_package(Boost REQUIRED)
@@ -84,7 +83,7 @@ configure_source_definitions(
 
 add_library(nodal ${SOURCES} ${HEADERS})
 
-enable_cxx14(nodal)
+target_compile_features(nodal PUBLIC cxx_std_14)
 target_include_directories(nodal PRIVATE "include/nodal" "src")
 target_include_directories(nodal PUBLIC
     $<BUILD_INTERFACE:${Boost_INCLUDE_DIRS}>
