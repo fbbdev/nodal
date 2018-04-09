@@ -24,6 +24,8 @@
 
 #pragma once
 
+#include "detail/unused.hpp"
+
 #include <cstdint>
 #include <string>
 #include <vector>
@@ -68,45 +70,55 @@ public:
 
     virtual void construct(node_data* data,
                            std::size_t index,
-                           bool param = false) const {}
+                           bool param = false) const {
+        detail::unused(data, index, param);
+    }
 
     virtual void destroy(node_data* data,
                          std::size_t index,
-                         bool param = false) const {}
+                         bool param = false) const {
+        detail::unused(data, index, param);
+    }
 
     virtual bool as_bool(node_data const* data,
                          std::size_t index,
                          bool param = false) const {
+        detail::unused(data, index, param);
         return false;
     }
 
     virtual std::uint8_t as_byte(node_data const* data,
                                  std::size_t index,
                                  bool param = false) const {
+        detail::unused(data, index, param);
         return 0;
     }
 
     virtual std::intmax_t as_int(node_data const* data,
                                  std::size_t index,
                                  bool param = false) const {
+        detail::unused(data, index, param);
         return 0;
     }
 
     virtual std::uintmax_t as_uint(node_data const* data,
                                    std::size_t index,
                                    bool param = false) const {
+        detail::unused(data, index, param);
         return 0;
     }
 
     virtual double as_real(node_data const* data,
                            std::size_t index,
                            bool param = false) const {
+        detail::unused(data, index, param);
         return 0.0;
     }
 
     virtual std::string as_string(node_data const* data,
                                   std::size_t index,
                                   bool param = false) const {
+        detail::unused(data, index, param);
         return {};
     }
 
@@ -119,22 +131,34 @@ public:
 
     virtual void from_bool(bool value, node_data* data,
                            std::size_t index,
-                           bool param = false) const {}
+                           bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 
     virtual void from_byte(std::uint8_t value, node_data* data,
-                           std::size_t index, bool param = false) const {}
+                           std::size_t index, bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 
     virtual void from_int(std::intmax_t value, node_data* data,
-                          std::size_t index, bool param = false) const {}
+                          std::size_t index, bool param = false) const {
+       detail::unused(value, data, index, param);
+   }
 
     virtual void from_uint(std::uintmax_t value, node_data* data,
-                           std::size_t index, bool param = false) const {}
+                           std::size_t index, bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 
     virtual void from_real(double value, node_data* data,
-                           std::size_t index, bool param = false) const {}
+                           std::size_t index, bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 
     virtual void from_string(std::string const& value, node_data* data,
-                             std::size_t index, bool param = false) const {}
+                             std::size_t index, bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 
     template <typename Object>
     void from_object(Object* value, node_data* data,
@@ -145,18 +169,21 @@ public:
     virtual std::vector<bool> as_bool_vector(node_data const* data,
                                              std::size_t index,
                                              bool param = false) const {
+        detail::unused(data, index, param);
         return {};
     }
 
     virtual std::vector<std::uint8_t> as_byte_vector(node_data const* data,
                                                      std::size_t index,
                                                      bool param = false) const {
+        detail::unused(data, index, param);
         return {};
     }
 
     virtual std::vector<std::intmax_t> as_int_vector(node_data const* data,
                                                      std::size_t index,
                                                      bool param = false) const {
+        detail::unused(data, index, param);
         return {};
     }
 
@@ -164,12 +191,14 @@ public:
     as_uint_vector(node_data const* data,
                    std::size_t index,
                    bool param = false) const {
+        detail::unused(data, index, param);
         return {};
     }
 
     virtual std::vector<double> as_real_vector(node_data const* data,
                                                std::size_t index,
                                                bool param = false) const {
+        detail::unused(data, index, param);
         return {};
     }
 
@@ -177,6 +206,7 @@ public:
     as_string_vector(node_data const* data,
                      std::size_t index,
                      bool param = false) const {
+        detail::unused(data, index, param);
         return {};
     }
 
@@ -191,32 +221,44 @@ public:
     virtual void from_bool_vector(std::vector<bool> const& value,
                                   node_data* data,
                                   std::size_t index,
-                                  bool param = false) const {}
+                                  bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 
     virtual void from_byte_vector(std::vector<std::uint8_t> const& value,
                                   node_data* data,
                                   std::size_t index,
-                                  bool param = false) const {}
+                                  bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 
     virtual void from_int_vector(std::vector<std::intmax_t> const& value,
                                  node_data* data,
                                  std::size_t index,
-                                 bool param = false) const {}
+                                 bool param = false) const {
+       detail::unused(value, data, index, param);
+   }
 
     virtual void from_uint_vector(std::vector<std::uintmax_t> const& value,
                                   node_data* data,
                                   std::size_t index,
-                                  bool param = false) const {}
+                                  bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 
     virtual void from_real_vector(std::vector<double> const& value,
                                   node_data* data,
                                   std::size_t index,
-                                  bool param = false) const {}
+                                  bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 
     virtual void from_string_vector(std::vector<std::string> const& value,
                                     node_data* data,
                                     std::size_t index,
-                                    bool param = false) const {}
+                                    bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 
     template <typename Object>
     void from_object_vector(std::vector<Object*> const& value, node_data* data,
@@ -261,22 +303,28 @@ protected:
     virtual void* as_pointer(node_data const* data,
                              std::size_t index,
                              bool param = false) const {
+        detail::unused(data, index, param);
         return nullptr;
     }
 
     virtual void from_pointer(void* value, node_data* data,
-                              std::size_t index, bool param = false) const {}
+                              std::size_t index, bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 
     virtual std::vector<void*> as_pointer_vector(node_data const* data,
                                                  std::size_t index,
                                                  bool param = false) const {
+        detail::unused(data, index, param);
         return {};
     }
 
     virtual void from_pointer_vector(std::vector<void*> const& value,
                                      node_data* data,
                                      std::size_t index,
-                                     bool param = false) const {}
+                                     bool param = false) const {
+        detail::unused(value, data, index, param);
+    }
 };
 
 } /* namespace nodal */

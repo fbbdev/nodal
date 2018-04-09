@@ -26,6 +26,8 @@
 
 #include "../compiler.hpp"
 
+#include "../detail/unused.hpp"
+
 #include <boost/graph/depth_first_search.hpp>
 
 namespace nodal
@@ -33,7 +35,9 @@ namespace nodal
 
 class dfs_visitor : public boost::default_dfs_visitor {
 public:
-    void context(context& ctx) {}
+    void context(context& ctx) {
+        detail::unused(ctx);
+    }
 };
 
 template <typename Visitor>

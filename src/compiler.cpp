@@ -44,7 +44,7 @@ compiler::~compiler() {
 }
 
 any compiler::run(graph& graph, context& ctx) const {
-    pass* last_pass;
+    pass* last_pass = nullptr;
 
     for (auto const& pass : *this) {
         auto result = pass->run(graph, ctx);
@@ -55,5 +55,8 @@ any compiler::run(graph& graph, context& ctx) const {
         last_pass = pass;
     }
 
-    return ctx.get(typeid(*last_pass));
+    if (last_pass)
+        return ctx.get(typeid(*last_pass));
+    else
+        return {};
 }

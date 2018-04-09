@@ -64,7 +64,7 @@ private:
 
 } /* namespace */
 
-any dead_branch_removal_pass::run(graph& graph, context& ctx) const {
+any dead_branch_removal_pass::run(graph& graph, context&) const {
     boost::depth_first_search(graph, dbr_visitor(keep),
                               boost::get(boost::vertex_color, graph));
 

@@ -258,7 +258,7 @@ namespace detail
         !from_or_to_string<Repr, Type>::value &&
         !(explicitly_convertible<Type, Repr>::value &&
           explicitly_convertible<Repr, Type>::value), Repr>::type
-    generic_type_cast(Type const& value) {
+    generic_type_cast(Type const&) {
         return Repr{};
     }
 
@@ -304,7 +304,7 @@ namespace detail
         !from_or_to_string<Type, Repr>::value &&
         !(explicitly_convertible<Type, Repr>::value &&
           explicitly_convertible<Repr, Type>::value)>::type
-    generic_type_assign(Type& dest, Repr const& value) {}
+    generic_type_assign(Type&, Repr const&) {}
 
     template <typename Repr, typename Type>
     inline typename std::enable_if<
@@ -370,7 +370,7 @@ namespace detail
     template <typename Repr, typename Type>
     inline typename std::enable_if<
         !convertible_to_vector<Repr, Type>::value, std::vector<Repr>>::type
-    generic_type_cast_to_vector(Type const& value) {
+    generic_type_cast_to_vector(Type const&) {
         return {};
     }
 
@@ -416,8 +416,7 @@ namespace detail
     template <typename Repr, typename Type>
     inline typename std::enable_if<
         !convertible_to_vector<Repr, Type>::value>::type
-    generic_type_assign_from_vector(Type& dest,
-                                    std::vector<Repr> const& value) {}
+    generic_type_assign_from_vector(Type&, std::vector<Repr> const&) {}
 
     template <typename Type>
     inline void* generic_type_as_pointer(Type const& value) {
@@ -471,7 +470,7 @@ namespace detail
         !(generic_type_traits<Type>::is_vector ||
           generic_type_traits<Type>::is_list),
         std::vector<void*>>::type
-    generic_type_as_pointer_vector(Type const& value) {
+    generic_type_as_pointer_vector(Type const&) {
         return {};
     }
 
@@ -514,8 +513,7 @@ namespace detail
     inline typename std::enable_if<
         !(generic_type_traits<Type>::is_vector ||
           generic_type_traits<Type>::is_list)>::type
-    generic_type_from_pointer_vector(Type& dest,
-                                     std::vector<void*> const& value) {}
+    generic_type_from_pointer_vector(Type&, std::vector<void*> const&) {}
 
 } /* namespace detail */
 

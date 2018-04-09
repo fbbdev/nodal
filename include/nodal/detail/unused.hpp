@@ -1,4 +1,4 @@
-/**
+/** -*- C++ -*-
  * The MIT License (MIT)
  *
  * Copyright (c) 2015 Fabio Massaioli
@@ -22,29 +22,17 @@
  * THE SOFTWARE.
  */
 
-#include "random.hpp"
+#pragma once
 
-#include <cstdlib>
-#include <ctime>
-#include <fstream>
-#include <stdexcept>
+namespace nodal
+{
 
-using namespace nodal;
+namespace detail
+{
 
-node_fn random_node::compile(node_data*) const {
-    std::srand((unsigned int) std::time(nullptr));
+    template<typename... Args>
+    inline void unused(Args&&...) {}
 
-    std::shared_ptr<std::ifstream> source(
-        new std::ifstream("/dev/random", std::ifstream::binary));
+} /* namespace detail */
 
-    return [source](double*, context const&) {
-        auto output = new double[1]{ 0 };
-
-        if (*source)
-            source->read((char*) output, sizeof(double));
-        else
-            *output = (double) std::rand();
-
-        return output;
-    };
-}
+} /* namespace nodal */

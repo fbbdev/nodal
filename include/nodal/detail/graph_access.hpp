@@ -80,12 +80,12 @@ inline std::size_t num_edges(nodal::graph const& g) {
 }
 
 inline nodal::graph_node* source(nodal::graph_link const& e,
-                                 nodal::graph const& g) {
+                                 nodal::graph const&) {
     return e.source_node;
 }
 
 inline nodal::graph_node* target(nodal::graph_link const& e,
-                                 nodal::graph const& g) {
+                                 nodal::graph const&) {
     return e.target_node;
 }
 
@@ -137,7 +137,7 @@ inline void remove_vertex(nodal::graph_node* v, nodal::graph& g) {
 }
 
 inline std::pair<nodal::graph_link, bool>
-add_edge(nodal::graph_node* u, nodal::graph_node* v, nodal::graph& g) {
+add_edge(nodal::graph_node* u, nodal::graph_node* v, nodal::graph&) {
     return { nodal::graph_link(u, 0, v, 0), false };
 }
 

@@ -42,7 +42,7 @@ public:
 };
 
 template <typename Container>
-any topological_sort_pass<Container>::run(graph& graph, context& ctx) const {
+any topological_sort_pass<Container>::run(graph& graph, context&) const {
     Container c;
 
     boost::topological_sort(

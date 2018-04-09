@@ -103,7 +103,7 @@ struct property_map<nodal::graph, PropertyTag> {
         using typename base::reference;
         using typename base::value_type;
 
-        map(nodal::graph const& g) : base(mapped_attribute::name) {}
+        map(nodal::graph const&) : base(mapped_attribute::name) {}
     };
 
     using type = map<false>;
@@ -204,9 +204,9 @@ struct property_map<nodal::graph, edge_weight_t> {
         using key_type = nodal::graph_link;
         using category = readable_property_map_tag;
 
-        const_type(nodal::graph const& g) {}
+        const_type(nodal::graph const&) {}
 
-        reference operator[](key_type const& link) const {
+        reference operator[](key_type const&) const {
             return 1.0;
         }
     };

@@ -45,7 +45,7 @@ class print_graph_pass : public pass {
 public:
     print_graph_pass(std::string const& title) : title(title) {}
 
-    any run(graph& graph, nodal::context& ctx) const override {
+    any run(graph& graph, nodal::context&) const override {
         if (!title.empty())
             std::cout << title << std::endl;
 
@@ -62,7 +62,7 @@ private:
 
 class type_check_pass : public pass {
 public:
-    any run(graph& graph, nodal::context& ctx) const override {
+    any run(graph& graph, nodal::context&) const override {
         auto nodes = graph.nodes();
         for (auto n = nodes.first; n != nodes.second; ++n) {
             if (!dynamic_cast<::node const*>((*n)->node()))
