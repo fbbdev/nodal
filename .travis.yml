@@ -1,17 +1,22 @@
 sudo: false
 language: cpp
-addons:
-    apt:
-        sources:
+matrix:
+  include:
+    - os: linux
+      addons:
+        apt:
+          sources:
             - ubuntu-toolchain-r-test
-        packages:
+          packages:
             - gcc-5
             - g++-5
+      env:
+        - MATRIX_EVAL="CC=gcc-5 && CXX=g++-5"
+    - os: linux
+      env:
+        - MATRIX_EVAL="CC=clang && CXX=clang++"
 before_install:
     - bash install_deps.sh
-    - export CC=gcc-5
-    - export CXX=g++-5
-    - export PATH="$HOME/deps/cmake/bin":"$PATH"
     - export CMAKE_PREFIX_PATH="$HOME/deps/boost"
 cache:
     directories:
