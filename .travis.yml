@@ -17,4 +17,4 @@ cache:
     directories:
         - $HOME/deps
 script:
-    - mkdir build && cd build && cmake -DBUILD_EXAMPLES=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Wno-deprecated-declarations .. && make -j2
+    - mkdir build && cd build && cmake -DBUILD_EXAMPLES=ON -DWITH_IPO=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_FLAGS=-Wno-deprecated-declarations .. && make -j2

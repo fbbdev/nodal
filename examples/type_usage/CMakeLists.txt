@@ -20,14 +20,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.9)
 project(nodal-example-type-usage CXX C)
 
 if(NOT BUILDING_NODAL)
     list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/../../cmake")
 
+    include(CheckIPOSupported)
     include(GNUInstallDirs)
     include(ConfigureSourceDefinitions)
+
+    check_ipo_supported(RESULT HAVE_IPO)
+
+    if(HAVE_IPO)
+        option(WITH_IPO "Enable inter-procedural optimization" OFF)
+    else()
+        set(WITH_IPO FALSE)
+    endif()
 
     find_package(nodal REQUIRED)
 endif()
@@ -48,5 +57,7 @@ add_executable(type-usage ${SOURCES} ${HEADERS})
 target_compile_features(type-usage PUBLIC cxx_std_14)
 target_link_libraries(type-usage nodal)
 
-set_property(TARGET type-usage
-             PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+if(WITH_IPO)
+    set_property(TARGET type-usage
+                 PROPERTY INTERPROCEDURAL_OPTIMIZATION True)
+endif()

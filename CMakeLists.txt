@@ -20,19 +20,27 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.9)
 project(nodal VERSION 0.1.0 LANGUAGES CXX C)
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
+include(CheckIPOSupported)
 include(CMakePackageConfigHelpers)
 include(GNUInstallDirs)
 include(ConfigureSourceDefinitions)
 
 find_package(Boost REQUIRED)
+check_ipo_supported(RESULT HAVE_IPO)
 
 option(BUILD_SHARED_LIBS "Build shared libraries instead of static" OFF)
 option(BUILD_EXAMPLES    "Build examples"                           OFF)
+
+if(HAVE_IPO)
+    option(WITH_IPO "Enable inter-procedural optimization" OFF)
+else()
+    set(WITH_IPO FALSE)
+endif()
 
 set(BUILDING_NODAL TRUE)
 
@@ -92,9 +100,12 @@ target_include_directories(nodal INTERFACE
     $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>)
 
 set_target_properties(nodal PROPERTIES
-    INTERPROCEDURAL_OPTIMIZATION TRUE
     VERSION "${PROJECT_VERSION}"
     SOVERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}")
+
+if(WITH_IPO)
+    set_property(TARGET nodal PROPERTY INTERPROCEDURAL_OPTIMIZATION TRUE)
+endif()
 
 if(BUILD_EXAMPLES)
     add_subdirectory(examples)

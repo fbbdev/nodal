@@ -13,6 +13,7 @@ Nodal is based on the Boost Graph Library and uses C++ 11/14 features.
 
 Dependencies:
 
+  * cmake >= 3.9
   * boost >= 1.55.0
 
 ```
