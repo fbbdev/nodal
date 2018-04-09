@@ -48,7 +48,9 @@ namespace detail
 class cycle_detection_pass
     : public depth_first_search_pass<detail::cd_visitor> {
 public:
-    cycle_detection_pass(detail::cd_callback const& callback)
+    using callback_type = std::function<void(graph_link const&, graph const&)>;
+
+    cycle_detection_pass(callback_type const& callback)
         : depth_first_search_pass<detail::cd_visitor>(callback)
         {}
 };
